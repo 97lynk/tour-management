@@ -1,0 +1,1 @@
+(json-server -w mock-db.json --port 4000 & ng serve -o)

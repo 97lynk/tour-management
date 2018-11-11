@@ -1,0 +1,93 @@
+<ng-container class="clearfix">
+    <h2 mat-dialog-title class="float-left">Add new plan for tour#{{ insertPlan.tourId }} </h2>
+    <mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close>
+            <mat-icon>close</mat-icon>
+        </button>
+    </mat-dialog-actions>
+</ng-container>
+
+
+<mat-dialog-content class="container">
+    <div class="row">
+        <div class="col-6">
+            <mat-form-field>
+                <input matInput type="text" placeholder="Name" (change)="insertPlan.url = encodingVietNamese(insertPlan.name)"
+                    [(ngModel)]="insertPlan.name">
+                <button mat-button *ngIf="insertPlan.name" matSuffix mat-icon-button aria-label="Clear" (click)="insertPlan.name=''">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </mat-form-field>
+        </div>
+
+        <div class="col-6">
+            <mat-form-field>
+                <input matInput type="text" placeholder="Url" [(ngModel)]="insertPlan.url">
+                <button mat-button *ngIf="insertPlan.url" matSuffix mat-icon-button aria-label="Clear" (click)="insertPlan.url=''">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <mat-form-field>
+                <input matInput [matDatepicker]="picker" placeholder="Choose a start date" [(ngModel)]="startDate">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+        </div>
+        <div class="col-6">
+            <mat-form-field>
+                <input matInput type="time" placeholder="Choose a start time">
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-3">
+            <mat-form-field>
+                <input matInput type="number" placeholder="Reserved Slots" [(ngModel)]="insertPlan.numberOfReservedSlot">
+            </mat-form-field>
+        </div>
+        <div class="col-3">
+            <mat-form-field>
+                <input matInput type="number" placeholder="Slots" [(ngModel)]="insertPlan.numberOfSlot">
+            </mat-form-field>
+        </div>
+        <div class="col-3">
+            <mat-form-field>
+                <input matInput type="number" placeholder="Adult price" [(ngModel)]="insertPlan.adultPrice">
+            </mat-form-field>
+        </div>
+        <div class="col-3">
+            <mat-form-field>
+                <input matInput type="number" placeholder="Child price" [(ngModel)]="insertPlan.childPrice">
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <mat-form-field>
+                <mat-chip-list #chipList>
+                    <mat-chip *ngFor="let p of insertedPlaces" [selectable]="true" [removable]="true" (removed)="remove(p)">
+                        {{ p.name }}
+                        <mat-icon matChipRemove *ngIf="true">cancel</mat-icon>
+                    </mat-chip>
+                    <input placeholder="New place..." #placeInput [formControl]="inputPlace" [matAutocomplete]="auto"
+                        [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                        [matChipInputAddOnBlur]="true">
+                </mat-chip-list>
+                <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+                    <mat-option *ngFor="let p of filteredProvinces | async" [value]="p">
+                        {{ p.name }}
+                    </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+        </div>
+    </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <!-- <button mat-button mat-dialog-close>Cancel</button> -->
+    <button mat-raised-button color="warn" [mat-dialog-close]="true" cdkFocusInitial>Save</button>
+</mat-dialog-actions>
