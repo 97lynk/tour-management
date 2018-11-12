@@ -11,6 +11,6 @@ export class Tour {
         public numberOfDate: number,
         public numberOfNight: number,
         public createAt: string,
-        public createBy: string) {}
+        public createBy: number) {}
 
 }

@@ -3,7 +3,7 @@ export class Plan {
         public id: number,
         public name: string,
         public url: string,
-        public startTime: string,
+        public startTime: number,
         public numberOfSlot: number,
         public numberOfReservedSlot: number,
         public adultPrice: number,
