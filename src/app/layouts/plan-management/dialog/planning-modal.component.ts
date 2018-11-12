@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
 
+
 @Component({
   selector: 'planning-dialog',
   templateUrl: './planning-dialog.component.html'
@@ -14,9 +15,9 @@ import { FormControl } from '@angular/forms';
 
 export class PlanningDialogComponent {
 
-  insertPlan = new Plan(0, '', '', (new Date()).toLocaleString(), 0, 30, 2000000.0, 1000000.0, 0);
+  insertPlan = new Plan(0, '', '', (new Date()).getTime(), 0, 30, 2000000.0, 1000000.0, 0);
 
-  startDate = new Date();
+  startDateTime = new Date();
 
   provinces: Place[] = [];
 
@@ -31,19 +32,36 @@ export class PlanningDialogComponent {
   @ViewChild('placeInput') placeInput: ElementRef<HTMLInputElement>;
   @ViewChild('auto') matAutocomplete: MatAutocomplete;
 
+  abc: any;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: {
-    places: Place[],
-    insertPlan: Plan
-  }) {
+  constructor(
+    @Inject(MAT_DIALOG_DATA)
+    public data: {
+      places: Place[],
+      insertPlan: Plan,
+      insertedPlaces: Place[];
+    }) {
+
     this.provinces = data.places;
     this.insertPlan = data.insertPlan;
-    
+    this.insertedPlaces = data.insertedPlaces;
+    this.startDateTime = new Date(this.insertPlan.startTime);
+
     this.filteredProvinces = this.inputPlace.valueChanges
       .pipe(
         startWith(''),
         map((input: string | Place | null) => input ? this._filterStates(input) : this.provinces.slice())
       );
+  }
+
+  changeTime(event: any) {
+    if(event.target.value.length === 5){
+      const times = String(event.target.value).split(':');
+      this.startDateTime.setHours(Number(times[0]));
+      this.startDateTime.setMinutes(Number(times[1]));
+
+      this.insertPlan.startTime = this.startDateTime.getTime();
+    }
   }
 
   // add(event: MatChipInputEvent): void {

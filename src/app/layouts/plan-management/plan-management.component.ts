@@ -36,24 +36,15 @@ export class PlanManagementComponent implements OnInit {
     plans: Plan[],
   };
 
+  tourPlans = new MatTableDataSource<any>([]);
 
-  // @ViewChild('instance') instance: NgbTypeahead;
-  // focus$ = new Subject<string>();
-  // click$ = new Subject<string>();
-
-  tourPlans = new MatTableDataSource<{
-    tour: Tour,
-    showPlans: boolean,
-    plans: Plan[],
-  }>([]);
   @ViewChild(MatPaginator) paginator: MatPaginator;
-
-
-  abc: Tour[] = [];
 
   provinces: Place[] = [];
 
-  insertPlan = new Plan(0, '', '', (new Date()).toLocaleString(), 0, 30, 2000000.0, 1000000.0, 0);
+  insertPlan = new Plan(0, '', '', (new Date()).getTime(), 0, 30, 2000000.0, 1000000.0, 0);
+  insertedPlaces: Place[] = [];
+
   placesOfPlans = [];
 
   // startDate: NgbDateStruct;
@@ -100,30 +91,11 @@ export class PlanManagementComponent implements OnInit {
     .subscribe((data: []) => this.placesOfPlans = data);
 
   getAllTour = () => {
-    this.tourService.getTours(0, 1000)
-      .subscribe((data: Tour[]) => {
+    this.tourService.getToursAndPlans(0, 1000)
+      .subscribe((data: any[]) => {
         // clear all data
-        this.abc = data;
-        this.tourPlans.data = [];
-
-
-
-        data.forEach(t => {
-          // push data from response
-          this.tourPlans.data.push({
-            tour: t,
-            showPlans: true,
-            plans: []
-          });
-          this.tourPlans.paginator = this.paginator;
-
-          // get plans for each tour
-          this.planService.getPlansByTourId(t.id)
-            .subscribe((plans: Plan[]) => {
-              let index = this.tourPlans.data.findIndex(tp => tp.tour.id == t.id);
-              if (index >= 0) this.tourPlans.data[index].plans = plans;
-            });
-        })
+        this.tourPlans.data = data;
+        this.tourPlans.paginator = this.paginator;
       });
   }
 
@@ -131,7 +103,7 @@ export class PlanManagementComponent implements OnInit {
    * methods handle events
    */
 
-  openDialogPlanning = (tour: Tour) => {
+  openDialogPlanning = (tour: any) => {
     // init value on form
     this.insertPlan.name = tour.name;
     this.insertPlan.url = this.encodingVietNamese(tour.name);
@@ -141,79 +113,33 @@ export class PlanManagementComponent implements OnInit {
     const dialogRef = this.dialog.open(PlanningDialogComponent, {
       data: {
         places: this.provinces,
-        insertPlan: this.insertPlan
+        insertPlan: this.insertPlan,
+        insertedPlaces: this.insertedPlaces
       }
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if(result === true){
-         //       // save date time
-  //       this.insertPlan.startTime = new Date(
-  //         this.startDate.year, this.startDate.month - 1, this.startDate.day,
-  //         this.startTime.hour, this.startTime.minute, this.startTime.second)
-  //         .toLocaleString();
+      if (result === true) {
+        console.log(`saving plan... ${JSON.stringify(this.insertPlan, null, 3)}`);
 
+        // save a plan
+        this.planService.addNewPlan(this.insertPlan).subscribe((plan: Plan) => {
+          // save places of the plan
+          this.insertedPlaces.forEach(place =>
+            this.placeService.addPlacesForPlan({ planId: plan.id, placeId: place.id }).subscribe()
+          );
 
-  //       console.log(`saving plan... ${JSON.stringify(this.insertPlan, null, 2)}`);
+          this.insertedPlaces = [];
+        });
 
-  //       // save a plan
-  //       this.planService.addNewPlan(this.insertPlan).subscribe((plan: Plan) => {
-  //         // save places of the plan
-  //         this.insertedPlaces.forEach(place =>
-  //           this.placeService.addPlacesForPlan({ planId: plan.id, placeId: place.id }).subscribe()
-  //         );
-  //       });
-
-  //       // refresh data
-  //       this.getAllProvince();
-  //       this.getPlaceOfPlan();
-  //       this.getAllTour();
+        // refresh data
+        this.getAllProvince();
+        this.getPlaceOfPlan();
+        this.getAllTour();
       }
-      console.log(`Dialog result: ${result}`);
+      // console.log(`Dialog result: ${result}`);
     });
   }
-
-  // handle click planning button to show modal
-  // open = (content: any, event: Event, tour: any) => {
-  //   console.log(`planning for tour ${JSON.stringify(tour)}`);
-
-  //   // init value on form
-  //   this.insertPlan.name = tour.name;
-  //   this.insertPlan.url = this.encodingVietNamese(tour.name);
-  //   this.insertPlan.tourId = tour.id;
-  //   this.insertPlan.numberOfSlot = 30;
-  //   this.insertPlan.numberOfReservedSlot = 0;
-
-  //   // handle modal event
-  //   this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', size: 'lg' })
-  //     // click save button
-  //     .result.then((result) => {
-  //       // save date time
-  //       this.insertPlan.startTime = new Date(
-  //         this.startDate.year, this.startDate.month - 1, this.startDate.day,
-  //         this.startTime.hour, this.startTime.minute, this.startTime.second)
-  //         .toLocaleString();
-
-
-  //       console.log(`saving plan... ${JSON.stringify(this.insertPlan, null, 2)}`);
-
-  //       // save a plan
-  //       this.planService.addNewPlan(this.insertPlan).subscribe((plan: Plan) => {
-  //         // save places of the plan
-  //         this.insertedPlaces.forEach(place =>
-  //           this.placeService.addPlacesForPlan({ planId: plan.id, placeId: place.id }).subscribe()
-  //         );
-  //       });
-
-  //       // refresh data
-  //       this.getAllProvince();
-  //       this.getPlaceOfPlan();
-  //       this.getAllTour();
-  //     }, (reason) => { // closing modal
-  //       // this.getAllProvince();
-  //     });
-
-  // }
 
   /**
    * extra methods

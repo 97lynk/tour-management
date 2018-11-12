@@ -17,6 +17,7 @@ import { UpgradeComponent } from '../../upgrade/upgrade.component';
 import { PlanManagementComponent } from '../plan-management/plan-management.component';
 import { PlanningDialogComponent } from '../plan-management/dialog/planning-modal.component';
 
+
 import {
   MatButtonModule,
   MatIconModule,
@@ -64,11 +65,12 @@ import {
     UpgradeComponent,
     PlanManagementComponent,
     PlanningDialogComponent,
-
+    
   ],
   entryComponents: [
     PlanningDialogComponent // custom dialog
   ],
+
 })
 
 export class AdminLayoutModule { }

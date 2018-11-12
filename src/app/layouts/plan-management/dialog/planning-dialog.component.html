@@ -32,14 +32,14 @@
     <div class="row">
         <div class="col-6">
             <mat-form-field>
-                <input matInput [matDatepicker]="picker" placeholder="Choose a start date" [(ngModel)]="startDate">
+                <input matInput [matDatepicker]="picker" placeholder="Choose a start date" [(ngModel)]="startDateTime">
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
         </div>
         <div class="col-6">
             <mat-form-field>
-                <input matInput type="time" placeholder="Choose a start time">
+                <input matInput type="time" [value]="startDateTime | date :'HH:mm'" (change)="changeTime($event)" placeholder="Choose a start time">
             </mat-form-field>
         </div>
     </div>

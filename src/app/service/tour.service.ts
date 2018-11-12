@@ -26,6 +26,9 @@ export class TourService {
     getTours = (page: number = 0, size: number = 10): Observable<Tour[]> =>
         this.http.get<Tour[]>(`${this.SERVER}/tours?page=${page}&_limit=${size}`);
 
+    getToursAndPlans = (page: number = 0, size: number = 10): Observable<any[]> =>
+        this.http.get<any[]>(`${this.SERVER}/tours?_embed=plans&page=${page}&_limit=${size}`);
+
 
     getDiscountTour = (isExpandTour: boolean = false): Observable<Tour[]> => {
         let expandTour = '';
