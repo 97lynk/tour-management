@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, from } from 'rxjs';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { MatPaginator, MatTableDataSource, MatDialog } from '@angular/material';
-import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, filter, map, groupBy, mergeMap, toArray } from 'rxjs/operators';
 import { Tour } from 'app/model/tour';
 import { Plan } from 'app/model/plan';
 import { Place } from 'app/model/place';
@@ -34,8 +34,7 @@ export class PlanManagementComponent implements OnInit {
   columnsToDisplay = ['id', 'name', 'noDN', 'action'];
   expandedElement: {
     tour: Tour,
-    showPlans: boolean,
-    plans: Plan[],
+    plans: any[],
   };
 
   tourPlans = new MatTableDataSource<any>([]);
@@ -43,9 +42,6 @@ export class PlanManagementComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   provinces: Place[] = [];
-
-  insertPlan = new Plan(0, '', '', (new Date()).getTime(), 0, 30, 2000000.0, 1000000.0, 0);
-  insertedPlaces: Place[] = [];
 
   placesOfPlans = [];
 
@@ -76,7 +72,6 @@ export class PlanManagementComponent implements OnInit {
   ngOnInit() {
     this.getAllTour();
     this.getAllProvince();
-    this.getPlaceOfPlan();
   }
 
   // /**
@@ -85,9 +80,6 @@ export class PlanManagementComponent implements OnInit {
 
   getAllProvince = () => this.placeService.getPlaces(0, 100)
     .subscribe((data: Place[]) => this.provinces = data);
-
-  getPlaceOfPlan = () => this.placeService.getPlansWithPlaces()
-    .subscribe((data: any[]) => this.placesOfPlans = data);
 
   getAllTour = () => {
     this.tourService.getToursAndPlans(0, 1000)
@@ -102,38 +94,36 @@ export class PlanManagementComponent implements OnInit {
    * methods handle events
    */
 
-  openDialogPlanning = (tour: any) => {
+  // for add new plan
+  openDialogAddPlan = (tour: any) => {
     // init value on form
-    this.insertPlan.name = tour.name;
-    this.insertPlan.url = this.encodingVietNamese(tour.name);
-    this.insertPlan.tourId = tour.id;
-    this.insertPlan.numberOfSlot = 30;
-    this.insertPlan.numberOfReservedSlot = 0;
+    let insertPlan = new Plan(0, tour.name, this.encodingVietNamese(tour.name),
+      Date.now(), 30, 0, 3000000, 2000000, tour.id);
+    let insertPlaces = [new Place(1, 'Nha Trang', 'aa', 10.2, 2.2, 0)];
 
     // open the dialog and pass data
     const dialogRef = this.dialog.open(PlanningDialogComponent, {
       data: {
+        title: `Add new plan for tour#${tour.id}`,
         places: this.provinces,
-        insertPlan: this.insertPlan,
-        insertedPlaces: this.insertedPlaces
+        plan: insertPlan,
+        choosedPlaces: insertPlaces
       }
     });
 
     // handle when close dialog
     dialogRef.afterClosed().subscribe(result => {
       if (result === true) {
-        console.log(`saving plan...\n ${JSON.stringify(this.insertPlan, null, 3)}`);
+        console.log(`saving plan...\n ${JSON.stringify(insertPlan, null, 3)}`);
 
         // save a plan
-        this.planService.addNewPlan(this.insertPlan).subscribe((plan: Plan) => {
-          
+        this.planService.addNewPlan(insertPlan).subscribe((plan: Plan) => {
+
           // save places of the plan
-          this.insertedPlaces.forEach(place =>
+          insertPlaces.forEach(place =>
             this.placeService.addPlacesForPlan({ planId: plan.id, placeId: place.id }).subscribe()
           );
 
-          // clear array
-          this.insertedPlaces = [];
           // show success notification
           this.showNotification('date_range', 'success', 'Planning', 'Oh yeah. You were succesful!', `/plans/${plan.id}`, '_blank');
 
@@ -146,11 +136,60 @@ export class PlanManagementComponent implements OnInit {
 
         // refresh data
         this.getAllProvince();
-        this.getPlaceOfPlan();
         this.getAllTour();
       }
-      // console.log(`Dialog result: ${result}`);
     });
+  }
+  // for update plan
+  openDialogUpdatePlan = (updatePlan: any) => {
+    this.placeService.getPlacesForPlan(updatePlan.id)
+      .subscribe((data: any[]) => {
+
+        let updatePlaces = data.map(pp => pp.place);
+        console.log(updatePlaces);
+        
+        // open the dialog and pass data
+        const dialogRef = this.dialog.open(PlanningDialogComponent, {
+          data: {
+            title: `Change a plan#${updatePlan.id}`,
+            places: this.provinces,
+            plan: updatePlan,
+            choosedPlaces: updatePlaces
+          }
+        });
+
+        // handle when close dialog
+        dialogRef.afterClosed().subscribe(result => {
+          if (result === true) {
+            console.log(`changing plan...\n ${JSON.stringify(updatePlan, null, 3)}`);
+
+            // save a plan
+            this.planService.updatePlan(updatePlan).subscribe((plan: Plan) => {
+
+              // // save places of the plan
+              // this.insertedPlaces.forEach(place =>
+              //   this.placeService.addPlacesForPlan({ planId: plan.id, placeId: place.id }).subscribe()
+              // );
+
+              // // clear array
+              // this.insertedPlaces = [];
+              // // show success notification
+              this.showNotification('date_range', 'success', 'Planning', 'Oh yeah. You were succesful!', `/plans/${plan.id}`, '_blank');
+
+            }, error => {
+              // log error
+              console.log(`error for change plan: \n${JSON.stringify(error, null, 2)}`);
+              // show success notification
+              this.showNotification('date_range', 'danger', 'Planning', 'Oh no. Something went wrong.', `/report`, '_blank')
+            });
+
+            // refresh data
+            this.getAllProvince();
+            this.getAllTour();
+          }
+        });
+      });
+
   }
 
   /**
@@ -171,16 +210,6 @@ export class PlanManagementComponent implements OnInit {
     str = str.replace(/\s+/g, '-')
     str = str.toLowerCase();
     return str;
-  }
-
-  getProvinceNames = (planId: number): string => {
-    let places = this.placesOfPlans.filter(pp => pp.planId === planId);
-    if (places != undefined && places.length >= 0) {
-      return places.map(p => p.place.name).reduce((a, b) => a + b + ', ', ' ');
-    }
-    return '';
-
-
   }
 
   showNotification = (_matIcon: string, _type: string, _title: string,

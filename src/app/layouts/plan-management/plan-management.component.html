@@ -36,7 +36,7 @@
                   <th mat-header-cell class="text-primary" *matHeaderCellDef style="background-color: white"> Action
                   </th>
                   <td mat-cell *matCellDef="let element" style="background-color: white">
-                    <button mat-stroked-button color="accent" class="text-primary" (click)="openDialogPlanning(element)">Planning</button>
+                    <button mat-stroked-button color="accent" class="text-primary" (click)="openDialogAddPlan(element)">Planning</button>
                   </td>
                 </ng-container>
 
@@ -45,17 +45,15 @@
                   <td class="pt-0 pb-0" mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">
                     <div class="tour-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
                       <mat-action-list class="w-100">
-                        <mat-list-item class="w-100" *ngFor="let plan of element.plans">
+                        <mat-list-item (click)="openDialogUpdatePlan(plan)" class="w-100" *ngFor="let plan of element.plans">
                           <mat-divider></mat-divider>
                           <img matListAvatar [src]="element.imageUrl">
                           <h3 matLine>ID: [{{ plan.id }}] </h3>
                           <p matLine>
                             <b>Start time:</b> {{ plan.startTime}},
                             <b>Slots:</b> {{ plan.numberOfReservedSlot }}/ {{ plan.numberOfSlot }}
+                            <b>Price:</b> {{ plan.childPrice | currency: 'VND' }} - {{ plan.adultPrice | currency: 'VND' }}
                           </p>
-                          <p mat-line>
-                            <b>Price:</b> {{ plan.childPrice | currency: 'VND' }} - {{ plan.adultPrice | currency: 'VND' }} </p>
-                          <p mat-line>{{getProvinceNames(plan.id) }}</p>
                         </mat-list-item>
                       </mat-action-list>
                     </div>

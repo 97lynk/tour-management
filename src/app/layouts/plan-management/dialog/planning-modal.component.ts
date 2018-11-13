@@ -15,9 +15,11 @@ import { FormControl } from '@angular/forms';
 
 export class PlanningDialogComponent {
 
-  insertPlan = new Plan(0, '', '', (new Date()).getTime(), 0, 30, 2000000.0, 1000000.0, 0);
+  plan = new Plan(0, '', '', (new Date()).getTime(), 0, 30, 2000000.0, 1000000.0, 0);
 
   startDateTime = new Date();
+
+  title = '';
 
   provinces: Place[] = [];
 
@@ -25,7 +27,7 @@ export class PlanningDialogComponent {
 
   filteredProvinces: Observable<Place[]>;
 
-  insertedPlaces: Place[] = [];
+  choosedPlaces: Place[] = [];
 
   separatorKeysCodes: number[] = [ENTER, COMMA];
 
@@ -37,15 +39,17 @@ export class PlanningDialogComponent {
   constructor(
     @Inject(MAT_DIALOG_DATA)
     public data: {
+      title: string,
       places: Place[],
-      insertPlan: Plan,
-      insertedPlaces: Place[];
+      plan: Plan,
+      choosedPlaces: Place[];
     }) {
 
+    this.title = data.title;
     this.provinces = data.places;
-    this.insertPlan = data.insertPlan;
-    this.insertedPlaces = data.insertedPlaces;
-    this.startDateTime = new Date(this.insertPlan.startTime);
+    this.plan = data.plan;
+    this.choosedPlaces = data.choosedPlaces;
+    this.startDateTime = new Date(this.plan.startTime);
 
     this.filteredProvinces = this.inputPlace.valueChanges
       .pipe(
@@ -55,27 +59,27 @@ export class PlanningDialogComponent {
   }
 
   changeTime(event: any) {
-    if(event.target.value.length === 5){
+    if (event.target.value.length === 5) {
       const times = String(event.target.value).split(':');
       this.startDateTime.setHours(Number(times[0]));
       this.startDateTime.setMinutes(Number(times[1]));
 
-      this.insertPlan.startTime = this.startDateTime.getTime();
+      this.plan.startTime = this.startDateTime.getTime();
     }
   }
 
   remove = (p: Place) => {
     // move province from insertPlaces array to provinces array
     this.provinces.push(p);
-    const index = this.insertedPlaces.indexOf(p);
+    const index = this.choosedPlaces.indexOf(p);
     if (index >= 0) {
-      this.insertedPlaces.splice(index, 1);
+      this.choosedPlaces.splice(index, 1);
     }
   }
 
   selected = (event: MatAutocompleteSelectedEvent) => {
     // move province from provinces array to insertPlaces array
-    this.insertedPlaces.push(event.option.value);
+    this.choosedPlaces.push(event.option.value);
     const index = this.provinces.indexOf(event.option.value);
     if (index >= 0) {
       this.provinces.splice(index, 1);
