@@ -16,5 +16,5 @@ export class PlanService {
     this.http.get<Plan[]>(`${this.SERVER}/plans?tourId=${tourId}`);
 
   addNewPlan = (plan: Plan): Observable<Plan> =>
-    this.http.post<Plan>(`${this.SERVER}/plans`, plan);
+    this.http.post<Plan>(`${this.SERVER}/plaans`, plan);
 }

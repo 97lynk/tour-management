@@ -11,6 +11,8 @@ import { PlanService } from 'app/service/plan.service';
 import { TourService } from 'app/service/tour.service';
 import { PlanningDialogComponent } from './dialog/planning-modal.component';
 
+declare var $: any;
+
 const SERVER = 'http://localhost:4000';
 
 
@@ -77,9 +79,6 @@ export class PlanManagementComponent implements OnInit {
     this.getPlaceOfPlan();
   }
 
-  // // format text show in dropdown items
-  // formatter = (p: Place) => p.name;
-
   // /**
   //  * methods exchange data with api
   //  */
@@ -88,7 +87,7 @@ export class PlanManagementComponent implements OnInit {
     .subscribe((data: Place[]) => this.provinces = data);
 
   getPlaceOfPlan = () => this.placeService.getPlansWithPlaces()
-    .subscribe((data: []) => this.placesOfPlans = data);
+    .subscribe((data: any[]) => this.placesOfPlans = data);
 
   getAllTour = () => {
     this.tourService.getToursAndPlans(0, 1000)
@@ -110,6 +109,8 @@ export class PlanManagementComponent implements OnInit {
     this.insertPlan.tourId = tour.id;
     this.insertPlan.numberOfSlot = 30;
     this.insertPlan.numberOfReservedSlot = 0;
+
+    // open the dialog and pass data
     const dialogRef = this.dialog.open(PlanningDialogComponent, {
       data: {
         places: this.provinces,
@@ -118,18 +119,29 @@ export class PlanManagementComponent implements OnInit {
       }
     });
 
+    // handle when close dialog
     dialogRef.afterClosed().subscribe(result => {
       if (result === true) {
-        console.log(`saving plan... ${JSON.stringify(this.insertPlan, null, 3)}`);
+        console.log(`saving plan...\n ${JSON.stringify(this.insertPlan, null, 3)}`);
 
         // save a plan
         this.planService.addNewPlan(this.insertPlan).subscribe((plan: Plan) => {
+          
           // save places of the plan
           this.insertedPlaces.forEach(place =>
             this.placeService.addPlacesForPlan({ planId: plan.id, placeId: place.id }).subscribe()
           );
 
+          // clear array
           this.insertedPlaces = [];
+          // show success notification
+          this.showNotification('date_range', 'success', 'Planning', 'Oh yeah. You were succesful!', `/plans/${plan.id}`, '_blank');
+
+        }, error => {
+          // log error
+          console.log(`error for saving plan: \n${JSON.stringify(error, null, 2)}`);
+          // show success notification
+          this.showNotification('date_range', 'danger', 'Planning', 'Oh no. Something went wrong.', `/report`, '_blank')
         });
 
         // refresh data
@@ -167,97 +179,38 @@ export class PlanManagementComponent implements OnInit {
       return places.map(p => p.place.name).reduce((a, b) => a + b + ', ', ' ');
     }
     return '';
+
+
+  }
+
+  showNotification = (_matIcon: string, _type: string, _title: string,
+    _message: string, _url: string, _target: string) => {
+    $.notify({
+      title: _title,
+      message: _message,
+      url: _url,
+      target: _target
+    }, {
+        type: _type,
+        timer: 3000,
+        placement: {
+          from: 'bottom',
+          align: 'right'
+        },
+        template: `<div data-notify="container" class="col-xl-4 col-lg-4 col-11 col-sm-4 col-md-4 alert alert-{0} alert-with-icon" role="alert">
+          <button mat-button type="button" aria-hidden="true" class="close mat-button" data-notify="dismiss"> <i class="material-icons">close</i></button>
+          <i class="material-icons" data-notify="icon">${_matIcon}</i>
+          <h4 data-notify="title">{1}</h4>
+          <p data-notify="message">{2}</p>
+          <div class="progress" data-notify="progressbar">
+              <div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
+                  style="width: 0%;"></div>
+          </div>
+          <a href="{3}" target="{4}" data-notify="url"></a>
+        </div>`
+      });
   }
 
   viewData = () => alert(this.inputSearch);
 }
 
-export interface PeriodicElement {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
-  description: string;
-}
-
-const ELEMENT_DATA: PeriodicElement[] = [
-  {
-    position: 1,
-    name: 'Hydrogen',
-    weight: 1.0079,
-    symbol: 'H',
-    description: `Hydrogen is a chemical element with symbol H and atomic number 1. With a standard
-        atomic weight of 1.008, hydrogen is the lightest element on the periodic table.`
-  }, {
-    position: 2,
-    name: 'Helium',
-    weight: 4.0026,
-    symbol: 'He',
-    description: `Helium is a chemical element with symbol He and atomic number 2. It is a
-        colorless, odorless, tasteless, non-toxic, inert, monatomic gas, the first in the noble gas
-        group in the periodic table. Its boiling point is the lowest among all the elements.`
-  }, {
-    position: 3,
-    name: 'Lithium',
-    weight: 6.941,
-    symbol: 'Li',
-    description: `Lithium is a chemical element with symbol Li and atomic number 3. It is a soft,
-        silvery-white alkali metal. Under standard conditions, it is the lightest metal and the
-        lightest solid element.`
-  }, {
-    position: 4,
-    name: 'Beryllium',
-    weight: 9.0122,
-    symbol: 'Be',
-    description: `Beryllium is a chemical element with symbol Be and atomic number 4. It is a
-        relatively rare element in the universe, usually occurring as a product of the spallation of
-        larger atomic nuclei that have collided with cosmic rays.`
-  }, {
-    position: 5,
-    name: 'Boron',
-    weight: 10.811,
-    symbol: 'B',
-    description: `Boron is a chemical element with symbol B and atomic number 5. Produced entirely
-        by cosmic ray spallation and supernovae and not by stellar nucleosynthesis, it is a
-        low-abundance element in the Solar system and in the Earth's crust.`
-  }, {
-    position: 6,
-    name: 'Carbon',
-    weight: 12.0107,
-    symbol: 'C',
-    description: `Carbon is a chemical element with symbol C and atomic number 6. It is nonmetallic
-        and tetravalent—making four electrons available to form covalent chemical bonds. It belongs
-        to group 14 of the periodic table.`
-  }, {
-    position: 7,
-    name: 'Nitrogen',
-    weight: 14.0067,
-    symbol: 'N',
-    description: `Nitrogen is a chemical element with symbol N and atomic number 7. It was first
-        discovered and isolated by Scottish physician Daniel Rutherford in 1772.`
-  }, {
-    position: 8,
-    name: 'Oxygen',
-    weight: 15.9994,
-    symbol: 'O',
-    description: `Oxygen is a chemical element with symbol O and atomic number 8. It is a member of
-         the chalcogen group on the periodic table, a highly reactive nonmetal, and an oxidizing
-         agent that readily forms oxides with most elements as well as with other compounds.`
-  }, {
-    position: 9,
-    name: 'Fluorine',
-    weight: 18.9984,
-    symbol: 'F',
-    description: `Fluorine is a chemical element with symbol F and atomic number 9. It is the
-        lightest halogen and exists as a highly toxic pale yellow diatomic gas at standard
-        conditions.`
-  }, {
-    position: 10,
-    name: 'Neon',
-    weight: 20.1797,
-    symbol: 'Ne',
-    description: `Neon is a chemical element with symbol Ne and atomic number 10. It is a noble gas.
-        Neon is a colorless, odorless, inert monatomic gas under standard conditions, with about
-        two-thirds the density of air.`
-  },
-];

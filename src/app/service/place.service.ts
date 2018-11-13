@@ -16,7 +16,7 @@ export class PlaceService {
     this.http.get<Place[]>(`${this.SERVER}/places?page=${page}&_limit=${size}`);
 
   getPlansWithPlaces = () =>
-    this.http.get(this.SERVER + '/plans_places?_expand=place');
+    this.http.get(`${this.SERVER}/plans_places?_expand=place`);
 
 
   addPlacesForPlan = (planPlace: { planId, placeId }) =>

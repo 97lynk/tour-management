@@ -64,23 +64,6 @@ export class PlanningDialogComponent {
     }
   }
 
-  // add(event: MatChipInputEvent): void {
-  //   // Add place only when MatAutocomplete is not open
-  //   // To make sure this does not conflict with OptionSelected Event
-  //   if (!this.matAutocomplete.isOpen) {
-  //     const input = event.input;
-  //     const value = event.value;
-
-  //     // Add our place
-  //     if ((value || '').trim()) {
-  //       const index = 
-  //       this.insertedPlaces.push();
-  //     }
-
-  //     this.inputPlace.setValue(null);
-  //   }
-  // }
-
   remove = (p: Place) => {
     // move province from insertPlaces array to provinces array
     this.provinces.push(p);

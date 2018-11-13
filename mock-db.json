@@ -1630,6 +1630,138 @@
       "adultPrice": 2000000,
       "childPrice": 1000000,
       "tourId": 2
+    },
+    {
+      "id": 22,
+      "name": "DU LỊCH QUY NHƠN - KỲ CO - EO GIÓ - TUY HÒA",
+      "url": "du-lich-quy-nhon-ky-co-eo-gio-tuy-hoa",
+      "startTime": 1542115380198,
+      "numberOfSlot": 30,
+      "numberOfReservedSlot": 0,
+      "adultPrice": 2000000,
+      "childPrice": 1000000,
+      "tourId": 1
+    },
+    {
+      "id": 23,
+      "name": "DU LỊCH QUY NHƠN - KỲ CO - EO GIÓ - TUY HÒA",
+      "url": "du-lich-quy-nhon-ky-co-eo-gio-tuy-hoa",
+      "startTime": 1542117230846,
+      "numberOfSlot": 30,
+      "numberOfReservedSlot": 0,
+      "adultPrice": 2000000,
+      "childPrice": 1000000,
+      "tourId": 1
+    },
+    {
+      "id": 24,
+      "name": "DU LỊCH QUY NHƠN - KỲ CO - EO GIÓ - TUY HÒA",
+      "url": "du-lich-quy-nhon-ky-co-eo-gio-tuy-hoa",
+      "startTime": 1542117805118,
+      "numberOfSlot": 30,
+      "numberOfReservedSlot": 0,
+      "adultPrice": 2000000,
+      "childPrice": 1000000,
+      "tourId": 1
+    },
+    {
+      "id": 25,
+      "name": "DU LỊCH QUY NHƠN - KỲ CO - EO GIÓ - TUY HÒA",
+      "url": "du-lich-quy-nhon-ky-co-eo-gio-tuy-hoa",
+      "startTime": 1542120950045,
+      "numberOfSlot": 30,
+      "numberOfReservedSlot": 0,
+      "adultPrice": 2000000,
+      "childPrice": 1000000,
+      "tourId": 1
+    },
+    {
+      "id": 26,
+      "name": "DU LỊCH HÀ NỘI - LÀO CAI - SAPA - HẠ LONG 5 NGÀY ",
+      "url": "du-lich-ha-noi-lao-cai-sapa-ha-long-5-ngay",
+      "startTime": 1542120995266,
+      "numberOfSlot": 30,
+      "numberOfReservedSlot": 0,
+      "adultPrice": 2000000,
+      "childPrice": 1000000,
+      "tourId": 2
+    },
+    {
+      "id": 27,
+      "name": "DU LỊCH QUY NHƠN - KỲ CO - EO GIÓ - TUY HÒA",
+      "url": "du-lich-quy-nhon-ky-co-eo-gio-tuy-hoa",
+      "startTime": 1542121109992,
+      "numberOfSlot": 30,
+      "numberOfReservedSlot": 0,
+      "adultPrice": 2000000,
+      "childPrice": 1000000,
+      "tourId": 1
+    },
+    {
+      "id": 28,
+      "name": "DU LỊCH QUY NHƠN - KỲ CO - EO GIÓ - TUY HÒA",
+      "url": "du-lich-quy-nhon-ky-co-eo-gio-tuy-hoa",
+      "startTime": 1542121231499,
+      "numberOfSlot": 30,
+      "numberOfReservedSlot": 0,
+      "adultPrice": 2000000,
+      "childPrice": 1000000,
+      "tourId": 1
+    },
+    {
+      "id": 29,
+      "name": "DU LỊCH QUY NHƠN - KỲ CO - EO GIÓ - TUY HÒA",
+      "url": "du-lich-quy-nhon-ky-co-eo-gio-tuy-hoa",
+      "startTime": 1542121414433,
+      "numberOfSlot": 30,
+      "numberOfReservedSlot": 0,
+      "adultPrice": 2000000,
+      "childPrice": 1000000,
+      "tourId": 1
+    },
+    {
+      "id": 30,
+      "name": "DU LỊCH QUY NHƠN - KỲ CO - EO GIÓ - TUY HÒA",
+      "url": "du-lich-quy-nhon-ky-co-eo-gio-tuy-hoa",
+      "startTime": 1542121536340,
+      "numberOfSlot": 30,
+      "numberOfReservedSlot": 0,
+      "adultPrice": 2000000,
+      "childPrice": 1000000,
+      "tourId": 1
+    },
+    {
+      "id": 31,
+      "name": "DU LỊCH QUY NHƠN - KỲ CO - EO GIÓ - TUY HÒA",
+      "url": "du-lich-quy-nhon-ky-co-eo-gio-tuy-hoa",
+      "startTime": 1542121577592,
+      "numberOfSlot": 30,
+      "numberOfReservedSlot": 0,
+      "adultPrice": 2000000,
+      "childPrice": 1000000,
+      "tourId": 1
+    },
+    {
+      "id": 32,
+      "name": "DU LỊCH QUY NHƠN - KỲ CO - EO GIÓ - TUY HÒA",
+      "url": "du-lich-quy-nhon-ky-co-eo-gio-tuy-hoa",
+      "startTime": 1542121616917,
+      "numberOfSlot": 30,
+      "numberOfReservedSlot": 0,
+      "adultPrice": 2000000,
+      "childPrice": 1000000,
+      "tourId": 1
+    },
+    {
+      "id": 33,
+      "name": "DU LỊCH QUY NHƠN - KỲ CO - EO GIÓ - TUY HÒA",
+      "url": "du-lich-quy-nhon-ky-co-eo-gio-tuy-hoa",
+      "startTime": 1542121818546,
+      "numberOfSlot": 30,
+      "numberOfReservedSlot": 0,
+      "adultPrice": 2000000,
+      "childPrice": 1000000,
+      "tourId": 1
     }
   ],
   "plans_places": [
@@ -1757,6 +1889,21 @@
       "planId": 21,
       "placeId": 4,
       "id": 24
+    },
+    {
+      "planId": 22,
+      "placeId": 4,
+      "id": 25
+    },
+    {
+      "planId": 23,
+      "placeId": 4,
+      "id": 26
+    },
+    {
+      "planId": 24,
+      "placeId": 4,
+      "id": 27
     }
   ]
 }
