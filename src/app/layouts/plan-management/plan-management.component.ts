@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
 import { Observable, from } from 'rxjs';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { MatPaginator, MatTableDataSource, MatDialog } from '@angular/material';
+import { MatPaginator, MatTableDataSource, MatDialog, MatSnackBar } from '@angular/material';
 import { debounceTime, distinctUntilChanged, filter, map, groupBy, mergeMap, toArray } from 'rxjs/operators';
 import { Tour } from 'app/model/tour';
 import { Plan } from 'app/model/plan';
@@ -56,7 +56,8 @@ export class PlanManagementComponent implements OnInit {
     private placeService: PlaceService,
     private planService: PlanService,
     private tourService: TourService,
-    private dialog: MatDialog) {
+    private dialog: MatDialog,
+    private snackBar: MatSnackBar) {
     // private modalService: NgbModal,
     // private calendar: NgbCalendar, {
     // // init startDate 
@@ -99,7 +100,7 @@ export class PlanManagementComponent implements OnInit {
     // init value on form
     let insertPlan = new Plan(0, tour.name, this.encodingVietNamese(tour.name),
       Date.now(), 30, 0, 3000000, 2000000, tour.id);
-    let insertPlaces = [new Place(1, 'Nha Trang', 'aa', 10.2, 2.2, 0)];
+    let insertPlaces = [];
 
     // open the dialog and pass data
     const dialogRef = this.dialog.open(PlanningDialogComponent, {
@@ -135,7 +136,6 @@ export class PlanManagementComponent implements OnInit {
         });
 
         // refresh data
-        this.getAllProvince();
         this.getAllTour();
       }
     });
@@ -146,8 +146,7 @@ export class PlanManagementComponent implements OnInit {
       .subscribe((data: any[]) => {
 
         let updatePlaces = data.map(pp => pp.place);
-        console.log(updatePlaces);
-        
+
         // open the dialog and pass data
         const dialogRef = this.dialog.open(PlanningDialogComponent, {
           data: {
@@ -184,12 +183,36 @@ export class PlanManagementComponent implements OnInit {
             });
 
             // refresh data
-            this.getAllProvince();
             this.getAllTour();
           }
         });
       });
 
+  }
+
+  deletePlan = (plan: any) => {
+    let plans: [] = this.tourPlans.data.find(t => t.id == plan.tourId).plans;
+    const index = plans.findIndex(p => plan.id);
+    let deletePlan = plans.splice(index, 1)[0];
+    console.log(deletePlan);
+    let snackBarRef = this.snackBar.open('Delete a plan success', 'Undo', { duration: 2000 });
+
+    let action = false;
+    snackBarRef.onAction().subscribe(() => {
+      action = true;
+    });
+
+    snackBarRef.afterDismissed().subscribe(() => {
+      if (action == false)
+        this.planService.deletePlan(plan.id).subscribe();
+      else
+      this.tourPlans.data.find(t => t.id == plan.tourId).plans.splice(index, 0, deletePlan);
+
+
+    });
+
+    // this.getAllTour();
+    // });
   }
 
   /**

@@ -15,8 +15,9 @@ import { MapsComponent } from '../../maps/maps.component';
 import { NotificationsComponent } from '../../notifications/notifications.component';
 import { UpgradeComponent } from '../../upgrade/upgrade.component';
 import { PlanManagementComponent } from '../plan-management/plan-management.component';
+import { TourManagementComponent } from '../tour-management/tour-management.component';
 import { PlanningDialogComponent } from '../plan-management/dialog/planning-modal.component';
-
+import { CKEditorModule } from 'ngx-ckeditor';
 
 import {
   MatButtonModule,
@@ -31,7 +32,9 @@ import {
   MatDatepickerModule,
   MatNativeDateModule,
   MatAutocompleteModule,
-  MatChipsModule
+  MatChipsModule,
+  MatSnackBarModule,
+  MatCardModule
 } from '@angular/material';
 
 @NgModule({
@@ -52,7 +55,10 @@ import {
     MatDatepickerModule,
     MatNativeDateModule,
     MatAutocompleteModule,
-    MatChipsModule
+    MatChipsModule,
+    MatSnackBarModule,
+    MatCardModule,
+    CKEditorModule
   ],
   declarations: [
     DashboardComponent,
@@ -64,8 +70,9 @@ import {
     NotificationsComponent,
     UpgradeComponent,
     PlanManagementComponent,
+    PlanManagementComponent,
     PlanningDialogComponent,
-    
+    TourManagementComponent
   ],
   entryComponents: [
     PlanningDialogComponent // custom dialog

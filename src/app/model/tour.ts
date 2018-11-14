@@ -10,7 +10,7 @@ export class Tour {
         public description: string,
         public numberOfDate: number,
         public numberOfNight: number,
-        public createAt: string,
-        public createBy: number) {}
+        public createAt: number,
+        public createBy: string) {}
 
 }

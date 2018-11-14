@@ -1467,17 +1467,6 @@
       "tourId": 59
     },
     {
-      "id": 7,
-      "name": "DU LỊCH QUY NHƠN - KỲ CO - EO GIÓ - TUY HÒA",
-      "url": "du-lich-quy-nhon-ky-co-eo-gio-tuy-hoa",
-      "startTime": 1538874046000,
-      "numberOfSlot": 30,
-      "numberOfReservedSlot": 0,
-      "adultPrice": 2000000,
-      "childPrice": 1000000,
-      "tourId": 1
-    },
-    {
       "id": 8,
       "name": "DU LỊCH TẾT NGUYÊN ĐÁN TẠI TUY HÒA- QUY NHƠN",
       "url": "du-lich-tet-nguyen-dan-tai-tuy-hoa-quy-nhon",
@@ -1762,6 +1751,17 @@
       "adultPrice": 2000000,
       "childPrice": 1000000,
       "tourId": 1
+    },
+    {
+      "id": 34,
+      "name": "DU LỊCH QUY NHƠN - KỲ CO - EO GIÓ - TUY HÒA",
+      "url": "du-lich-quy-nhon-ky-co-eo-gio-tuy-hoa",
+      "startTime": 1542204776153,
+      "numberOfSlot": 30,
+      "numberOfReservedSlot": 0,
+      "adultPrice": 3000000,
+      "childPrice": 2000000,
+      "tourId": 1
     }
   ],
   "plans_places": [
@@ -1769,11 +1769,6 @@
       "id": 0,
       "planId": 1,
       "placeId": 1
-    },
-    {
-      "planId": 3,
-      "placeId": 31,
-      "id": 1
     },
     {
       "planId": 4,
@@ -1789,11 +1784,6 @@
       "planId": 6,
       "placeId": 54,
       "id": 4
-    },
-    {
-      "planId": 7,
-      "placeId": 6,
-      "id": 5
     },
     {
       "planId": 8,
@@ -1904,6 +1894,21 @@
       "planId": 24,
       "placeId": 4,
       "id": 27
+    },
+    {
+      "planId": 34,
+      "placeId": 4,
+      "id": 28
+    },
+    {
+      "planId": 34,
+      "placeId": 5,
+      "id": 29
+    },
+    {
+      "planId": 34,
+      "placeId": 3,
+      "id": 30
     }
   ]
 }

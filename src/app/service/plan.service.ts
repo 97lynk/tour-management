@@ -20,4 +20,7 @@ export class PlanService {
 
   updatePlan = (plan: Plan): Observable<Plan> =>
     this.http.put<Plan>(`${this.SERVER}/plans/${plan.id}`, plan);
+
+  deletePlan = (planId: number | string) =>
+    this.http.delete<Plan>(`${this.SERVER}/plans/${planId}`);
 }

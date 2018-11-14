@@ -44,18 +44,24 @@
                 <ng-container matColumnDef="expandedDetail">
                   <td class="pt-0 pb-0" mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">
                     <div class="tour-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
-                      <mat-action-list class="w-100">
-                        <mat-list-item (click)="openDialogUpdatePlan(plan)" class="w-100" *ngFor="let plan of element.plans">
+                      <mat-list class="w-100">
+                        <mat-list-item class="w-100" *ngFor="let plan of element.plans">
                           <mat-divider></mat-divider>
                           <img matListAvatar [src]="element.imageUrl">
-                          <h3 matLine>ID: [{{ plan.id }}] </h3>
+                          <h3 matLine>
+                            <a href="#" (click)="$event.preventDefault(); openDialogUpdatePlan(plan);">ID: [{{ plan.id }}] </a>
+                          </h3>
                           <p matLine>
                             <b>Start time:</b> {{ plan.startTime}},
                             <b>Slots:</b> {{ plan.numberOfReservedSlot }}/ {{ plan.numberOfSlot }}
-                            <b>Price:</b> {{ plan.childPrice | currency: 'VND' }} - {{ plan.adultPrice | currency: 'VND' }}
+                            <b>Price:</b> {{ plan.childPrice | currency: 'VND' }} - {{ plan.adultPrice | currency:
+                            'VND' }}
                           </p>
+                          <button mat-icon-button (click)="deletePlan(plan)">
+                            <i class="material-icons text-danger">clear</i>
+                          </button>
                         </mat-list-item>
-                      </mat-action-list>
+                      </mat-list>
                     </div>
                   </td>
                 </ng-container>
