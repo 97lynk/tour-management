@@ -7,12 +7,19 @@ table {
   display: flex;
 }
 
-tr {
-  .tour-detail-row {
-    height: 0;
-  }
+.tour-detail-row {
+  height: 0;
 }
 
 .tour-row {
   border-bottom: 1px solid #eee;
+}
+
+pre {
+  font-family: 'Montserrat', sans-serif;
+  white-space: pre-wrap; /* Since CSS 2.1 */
+  white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+  white-space: -pre-wrap; /* Opera 4-6 */
+  white-space: -o-pre-wrap; /* Opera 7 */
+  word-wrap: break-word; /* Internet Explorer 5.5+ */
 }

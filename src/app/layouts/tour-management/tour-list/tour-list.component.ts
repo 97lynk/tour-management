@@ -1,9 +1,13 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Tour} from '../../../model/tour';
-import {MatTableDataSource} from '@angular/material';
+import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
 import {TourService} from '../../../service/tour.service';
 import {trigger, state, style, transition, animate} from '@angular/animations';
 import {MatTableDataSource} from '@angular/material';
+import {of} from 'rxjs';
+import {map, startWith, switchMap} from 'rxjs/operators';
+import {switchMapTo} from 'rxjs-compat/operator/switchMapTo';
+import {Page} from '../../../model/response-resource';
 
 @Component({
   selector: 'tour-list',
@@ -20,24 +24,38 @@ import {MatTableDataSource} from '@angular/material';
 })
 export class TourListComponent implements OnInit {
 
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
   tours = new MatTableDataSource<Tour>([]);
+
+  page: Page;
 
   displayedColumns = ['id', 'name'];
 
   expandedTour: Tour;
 
+  isLoadingResults = true;
+
   constructor(private tourService: TourService) {
+    this.page = { size: 10, totalElements: 0, totalPages: 0, number: 0};
   }
 
   ngOnInit() {
-    this.loadTours();
-  }
-
-  loadTours = () => {
-    console.log(`load tours`);
-    this.tourService.getTours(0, 100).subscribe((tours: Tour) => {
-      this.tours.data = tours.content;
-      console.log(`load tours success ${tours.content.length}`);
-    });
+    this.paginator.page
+      .pipe(
+        startWith({}),
+        switchMap(() => {
+          console.log(`load Tours page=${this.paginator.pageIndex} size=${this.paginator.pageSize}`);
+          this.isLoadingResults = true;
+          return this.tourService.getTours(this.paginator.pageIndex, this.paginator.pageSize);
+        }), map((tour: Tour) => {
+          this.isLoadingResults = false;
+          this.page = tour.page;
+          return tour.content;
+        }))
+      .subscribe((tours: Tour[]) => {
+        console.log(`load Tours complete ${JSON.stringify(tours.map((t: Tour) => t.id))}`);
+        this.tours.data = tours;
+      });
   }
 }

@@ -5,7 +5,7 @@
   </div>
   <div class="card-body">
     <div class="table-responsive">
-      <mat-paginator [length]="tours.data.length" [pageSize]="10"
+      <mat-paginator [length]="page.totalElements" [pageSize]="page.size"
                      [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
 
       <table class="table" mat-table [dataSource]="tours" multiTemplateDataRows>

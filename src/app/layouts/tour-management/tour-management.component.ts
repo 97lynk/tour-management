@@ -1,42 +1,51 @@
-import { Component, OnInit } from '@angular/core';
-import { Tour } from 'app/model/tour';
-import { TourService } from 'app/service/tour.service';
-import { trigger, state, style, transition, animate } from '@angular/animations';
-import { MatTableDataSource } from '@angular/material';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {Tour} from 'app/model/tour';
+import {TourService} from 'app/service/tour.service';
+import {TourListComponent} from './tour-list/tour-list.component';
 
 @Component({
   selector: 'app-tour-management',
   templateUrl: './tour-management.component.html',
   styleUrls: ['./tour-management.component.scss'],
   providers: [TourService],
-  animations: [
-    trigger('detailExpand', [
-      state('collapsed', style({ height: '0px', minHeight: '0', display: 'none' })),
-      state('expanded', style({ height: '*' })),
-      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
-    ]),
-  ]
+
 })
 export class TourManagementComponent implements OnInit {
 
-  tours = new MatTableDataSource<Tour>([]);
+  @ViewChild('tableTours') tableTours: TourListComponent;
 
-  displayedColumns = ['id', 'name'];
+  insertTour: Tour;
 
-  expandedTour: Tour;
-
-  insertTour: Tour = new Tour(0, '', '', '', '', '', '', 3, 2, new Date().getTime(), 'admin');
   constructor(private tourService: TourService) {
-
+    this.insertTour = {
+      id: -1,
+      name: '',
+      url: '',
+      title: '',
+      imageUrl: '',
+      fileContentUrl: '',
+      description: '',
+      numberOfDate: 1,
+      numberOfNight: 2,
+      createAt: 'Admin',
+      createBy: (new Date()).toLocaleString(),
+      content: null,
+      links: null
+    };
   }
 
   ngOnInit() {
-    this.tourService.getTours(0, 100).subscribe((data: Tour[]) => {
-      this.tours.data = data;
-    });
   }
 
-   /**
+  submitNewTour = () => {
+    this.tourService.addNewTour(this.insertTour)
+      .subscribe((tour: Tour) => {
+        console.log(`Add new tour success Tour#${tour.id} - ${tour.links[0].href}`);
+        this.tableTours.loadTours();
+      });
+  }
+
+  /**
    * extra methods
    */
   encodingVietNamese = (str) => {
