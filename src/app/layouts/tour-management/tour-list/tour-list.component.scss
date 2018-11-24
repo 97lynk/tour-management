@@ -1,0 +1,18 @@
+table {
+  width: 100%;
+}
+
+.tour-detail {
+  overflow: hidden;
+  display: flex;
+}
+
+tr {
+  .tour-detail-row {
+    height: 0;
+  }
+}
+
+.tour-row {
+  border-bottom: 1px solid #eee;
+}

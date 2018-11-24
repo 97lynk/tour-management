@@ -1,0 +1,63 @@
+<div class="card">
+  <div class="card-header card-header-danger">
+    <h4 class="card-title ">Simple Table</h4>
+    <p class="card-category"> Here is a subtitle for this table</p>
+  </div>
+  <div class="card-body">
+    <div class="table-responsive">
+      <mat-paginator [length]="tours.data.length" [pageSize]="10"
+                     [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+
+      <table class="table" mat-table [dataSource]="tours" multiTemplateDataRows>
+        <!-- ID Column -->
+        <ng-container matColumnDef="id">
+          <th mat-header-cell class="text-primary" *matHeaderCellDef> Mã tour</th>
+          <td mat-cell *matCellDef="let tour" class="border-0"> {{ tour.id }}</td>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="name">
+          <th mat-header-cell class="text-primary" *matHeaderCellDef> Tên tour</th>
+          <td mat-cell *matCellDef="let tour" class="border-0"> {{ tour.name }}</td>
+        </ng-container>
+
+        <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+        <ng-container matColumnDef="expandedDetail">
+          <td class="pt-0 pb-0 border-0" mat-cell *matCellDef="let tour"
+              [attr.colspan]="displayedColumns.length">
+            <div class="tour-detail"
+                 [@detailExpand]="tour == expandedTour ? 'expanded' : 'collapsed'">
+              <div class="card shadow-none">
+                <div class="row container">
+                  <div class="col-5 d-flex flex-column justify-content-around">
+                    <img [src]="tour.imageUrl" alt="" class="img-fluid p-2">
+                  </div>
+                  <div class="col-7">
+                    <p class="card-text">
+                      <span><pre>{{ tour.description }}</pre></span>
+                    </p>
+                    <p class="card-text">
+                      <small>
+                        <b>Thời gian:</b> {{ tour.numberOfDate }} ngày
+                        {{tour.numberOfNight }}đêm
+                      </small>
+                    </p>
+                    <a href="/data/contents/{{ tour.fileContentUrl}}"
+                       class="card-link" target="_blank">Xem nội dung file HTML</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let tour; columns: displayedColumns;" class="tour-row"
+            [class.tour-expanded-row]="expandedTour === tour" (click)="expandedTour = tour">
+        </tr>
+        <tr mat-row *matRowDef="let row; columns: ['expandedDetail']"
+            class="tour-detail-row border-0"></tr>
+      </table>
+    </div>
+  </div>
+</div>
