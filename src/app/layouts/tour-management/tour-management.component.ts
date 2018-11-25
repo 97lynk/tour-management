@@ -1,7 +1,9 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
 import {Tour} from 'app/model/tour';
 import {TourService} from 'app/service/tour.service';
 import {TourListComponent} from './tour-list/tour-list.component';
+import {TourFormComponent} from './tour-form/tour-form.component';
+import {NavigationEnd, Router} from '@angular/router';
 
 @Component({
   selector: 'app-tour-management',
@@ -12,57 +14,49 @@ import {TourListComponent} from './tour-list/tour-list.component';
 })
 export class TourManagementComponent implements OnInit {
 
-  @ViewChild('tableTours') tableTours: TourListComponent;
+  @ViewChild(TourListComponent) tableTours: TourListComponent;
+  @ViewChild(TourFormComponent) tourForm: TourFormComponent;
 
-  insertTour: Tour;
-
-  constructor(private tourService: TourService) {
-    this.insertTour = {
-      id: -1,
-      name: '',
-      url: '',
-      title: '',
-      imageUrl: '',
-      fileContentUrl: '',
-      description: '',
-      numberOfDate: 1,
-      numberOfNight: 2,
-      createAt: 'Admin',
-      createBy: (new Date()).toLocaleString(),
-      content: null,
-      links: null
-    };
+  constructor(private tourService: TourService,
+              private router: Router) {
   }
 
   ngOnInit() {
   }
 
-  submitNewTour = () => {
-    this.tourService.addNewTour(this.insertTour)
-      .subscribe((tour: Tour) => {
-        console.log(`Add new tour success Tour#${tour.id} - ${tour.links[0].href}`);
-        this.tableTours.loadTours();
-      });
+  submitNewTour = (insertTour: Tour) => {
+    if (this.tourForm.insertMode)
+      this.tourService.addNewTour(insertTour)
+        .subscribe((tour: Tour) => {
+          console.log(`Add new tour success Tour#${tour.id} - ${tour.links[0].href}`);
+
+          // change to last page
+          this.tableTours.paginator.lastPage();
+          // clear form
+          this.tourForm.refreshPage();
+        });
   }
 
-  /**
-   * extra methods
-   */
-  encodingVietNamese = (str) => {
-    str = str.toLowerCase();
-    str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, 'a');
-    str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, 'e');
-    str = str.replace(/ì|í|ị|ỉ|ĩ/g, 'i');
-    str = str.replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, 'o');
-    str = str.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, 'u');
-    str = str.replace(/ỳ|ý|ỵ|ỷ|ỹ/g, 'y');
-    str = str.replace(/đ/g, 'd');
-    str = str.replace(/!|@|%|\^|\*|\(|\)|\+|\=|\<|\>|\?|\/|,|\.|\:|\;|\'|\"|\&|\#|\[|\]|~|\$|_|`|-|{|}|\||\\/g, ' ');
-    str = str.replace(/ + /g, '-');
-    str = str.trim();
-    str = str.replace(/\s+/g, '-')
-    str = str.toLowerCase();
-    return str;
+  submitEditTour = (editTour: Tour) => {
+    if (!this.tourForm.insertMode && editTour.id != -1)
+      this.tourService.updateTourById(editTour.id, editTour)
+        .subscribe((tour: Tour) => {
+          console.log(`Edit tour success Tour#${tour.id} - ${tour.links[0].href}`);
+
+          // change to first page
+          this.tableTours.paginator.firstPage();
+          // clear form
+          this.tourForm.refreshPage();
+        });
   }
 
+  clickEditTour = (tour: Tour, tourForm: any) => {
+    tourForm.scrollIntoView(true);
+
+    // change data of form
+    this.tourForm.insertMode = false;
+    this.tourForm.tour = tour;
+    this.tourService.loadContentPostOfTour(tour.fileContentUrl)
+      .subscribe((html: string) => this.tourForm.contentHTML = html);
+  }
 }

@@ -1,16 +1,15 @@
-export class Tour {
+import {ResponseResource} from './response-resource';
 
-    constructor(
-        public id: number,
-        public name: string,
-        public url: string,
-        public title: string,
-        public imageUrl: string,
-        public content: string,
-        public description: string,
-        public numberOfDate: number,
-        public numberOfNight: number,
-        public createAt: number,
-        public createBy: string) {}
-
+export class Tour extends ResponseResource<Tour> {
+  id: number;
+  name: string;
+  url: string;
+  title: string;
+  imageUrl: string;
+  fileContentUrl: string;
+  description: string;
+  numberOfDate: number;
+  numberOfNight: number;
+  createAt: string;
+  createBy: string;
 }

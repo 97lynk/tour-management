@@ -36,6 +36,8 @@ import {
   MatSnackBarModule,
   MatCardModule
 } from '@angular/material';
+import {TourListComponent} from '../tour-management/tour-list/tour-list.component';
+import {TourFormComponent} from '../tour-management/tour-form/tour-form.component';
 
 @NgModule({
   imports: [
@@ -72,7 +74,9 @@ import {
     PlanManagementComponent,
     PlanManagementComponent,
     PlanningDialogComponent,
-    TourManagementComponent
+    TourManagementComponent,
+    TourListComponent,
+    TourFormComponent
   ],
   entryComponents: [
     PlanningDialogComponent // custom dialog

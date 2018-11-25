@@ -1,108 +1,14 @@
 <div class="main-content">
     <div class="container-fluid">
-
-        <div class="card">
-            <div class="card-header card-header-danger">
-                Add a new tour
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-6">
-                        <div class="row">
-                            <mat-form-field class="col-6">
-                                <input matInput type="text" placeholder="Name" required [(ngModel)]="insertTour.name"
-                                       (change)="insertTour.title = insertTour.name; insertTour.url = encodingVietNamese(insertTour.name)">
-                                <!-- <mat-hint align="end"></mat-hint> -->
-                            </mat-form-field>
-
-                            <mat-form-field class="col-6">
-                                <input matInput type="text" placeholder="Title" required [(ngModel)]="insertTour.title">
-                                <mat-hint align="end" class="text-primary" (click)="insertTour.title = insertTour.name">
-                                    copy from
-                                    name
-                                </mat-hint>
-                            </mat-form-field>
-                        </div>
-
-                        <div class="row">
-                            <mat-form-field class="col-6">
-                                <input matInput type="text" placeholder="Url" required [(ngModel)]="insertTour.url">
-                                <mat-hint align="end" class="text-primary"
-                                          (click)="insertTour.url = encodingVietNamese(insertTour.name)">encode from name
-                                </mat-hint>
-                            </mat-form-field>
-                            <mat-form-field class="col-6">
-                                <input matInput type="text" required placeholder="Image Url"
-                                       [(ngModel)]="insertTour.imageUrl">
-                            </mat-form-field>
-                        </div>
-                        <br/>
-
-                        <div class="row">
-                            <div class="col-6">
-                                <div class="row">
-                                    <mat-form-field class="col-6">
-                                        <input matInput type="text" placeholder="No. Date" required class="form-control"
-                                               [(ngModel)]="insertTour.numberOfDate"
-                                               (change)="insertTour.numberOfNight = (insertTour.numberOfDate - 1)">
-                                    </mat-form-field>
-                                    <mat-form-field class="col-6">
-                                        <input matInput type="text" placeholder="No. Night" required
-                                               class="form-control" [(ngModel)]="insertTour.numberOfNight">
-                                    </mat-form-field>
-                                </div>
-                                <div class="row">
-                                    <mat-form-field class="col-6">
-                                        <input matInput type="text" placeholder="Create at" required
-                                               class="form-control" value="{{ insertTour.createAt }}">
-                                    </mat-form-field>
-                                    <mat-form-field class="col-6">
-                                        <input matInput type="text" placeholder="Create by" required
-                                               class="form-control" value="{{ insertTour.createBy }}">
-                                    </mat-form-field>
-                                </div>
-                            </div>
-
-                            <div class="col-6">
-                                <label>Preview image</label>
-                                <img class="img-fluid" [src]="insertTour.imageUrl"
-                                     (error)="previewImg.src='https://www.sylff.org/wp-content/uploads/2016/04/noImage.jpg'"
-                                     #previewImg/>
-                            </div>
-
-                        </div>
-
-                        <div class="row">
-                            <mat-form-field class="col-12">
-                                <textarea matInput rows="5" placeholder="Description"
-                                          [(ngModel)]="insertTour.description"></textarea>
-                            </mat-form-field>
-                        </div>
-
-                    </div>
-                    <div class="col-6">
-                        <div>Content</div>
-                        <ck-editor [config]="{extraPlugins: 'divarea', htmlEncodeOutput: false, entities: false,  height: '300px'}"
-                                   name="editContentTour"
-                                   [(ngModel)]="insertTour.content" skin="moono-lisa" language="vi"
-                                   [fullPage]="false"></ck-editor>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="d-flex col-12">
-                        <button type="submit" class="btn btn-style-6 mr-auto" (click)="submitNewTour()">Save
-                            tour
-                        </button>
-                        <span *ngIf="insertTour.id != -1">{{ 'Update tour#' + insertTour.id }}</span>
-                        <button type="submit" class="btn btn-style-6" (click)="updateTour()">Save change</button>
-                    </div>
-                </div>
+        <div class="row" #tourForm>
+            <div class="col-md-12">
+                <tour-form (clickSaveAddTour)="submitNewTour($event)" (clickSaveEditTour)="submitEditTour($event)"></tour-form>
             </div>
         </div>
 
         <div class="row">
             <div class="col-md-12">
-                <tour-list #tableTours></tour-list>
+                <tour-list (clickEditButton)="clickEditTour($event, tourForm)"></tour-list>
             </div>
         </div>
     </div>
