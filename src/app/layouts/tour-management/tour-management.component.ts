@@ -24,30 +24,48 @@ export class TourManagementComponent implements OnInit {
   ngOnInit() {
   }
 
-  submitNewTour = (insertTour: Tour) => {
-    if (this.tourForm.insertMode)
+  submitNewTour = (insertTour: Tour, tourForm: any) => {
+    if (this.tourForm.insertMode) {
       this.tourService.addNewTour(insertTour)
         .subscribe((tour: Tour) => {
           console.log(`Add new tour success Tour#${tour.id} - ${tour.links[0].href}`);
+
+          // prepare file html
+          const fileHTML = new File([this.tourForm.contentHTML], `${tour.url}-${tour.id}.html`,
+            { type: 'text/html'});
+          this.tourService.uploadContentPostOfTour(fileHTML)
+            .subscribe((fileUrl: any) => console.log(`store file complete at ${fileUrl}`));
 
           // change to last page
           this.tableTours.paginator.lastPage();
           // clear form
           this.tourForm.refreshPage();
+          // scroll to
+          tourForm.scrollIntoView(true);
         });
+    }
   }
 
-  submitEditTour = (editTour: Tour) => {
-    if (!this.tourForm.insertMode && editTour.id != -1)
+  submitEditTour = (editTour: Tour, tourForm: any) => {
+    if (!this.tourForm.insertMode && editTour.id !== -1) {
       this.tourService.updateTourById(editTour.id, editTour)
         .subscribe((tour: Tour) => {
           console.log(`Edit tour success Tour#${tour.id} - ${tour.links[0].href}`);
+
+          // prepare file html
+          const fileHTML = new File([this.tourForm.contentHTML], `${tour.url}-${tour.id}.html`,
+            { type: 'text/html'});
+          this.tourService.uploadContentPostOfTour(fileHTML)
+            .subscribe((fileUrl: any) => console.log(`store file complete at ${fileUrl}`));
 
           // change to first page
           this.tableTours.paginator.firstPage();
           // clear form
           this.tourForm.refreshPage();
+          // scroll to
+          tourForm.scrollIntoView(true);
         });
+    }
   }
 
   clickEditTour = (tour: Tour, tourForm: any) => {

@@ -13,17 +13,9 @@
             <div class="col">
                 <mat-form-field>
                     <input matInput type="text" placeholder="Tên tour" required [(ngModel)]="tour.name"
-                           (keyup)="tour.title = tour.name; tour.url = encodingVietNamese(tour.name)">
+                           (keyup)="tour.url = encodingVietNamese(tour.name)">
+                    <mat-hint align="start">Làm tiêu đề bài viết và tên plan</mat-hint>
                     <button mat-button *ngIf="tour.name" matSuffix mat-icon-button aria-label="Clear" (click)="tour.name=''">
-                        <mat-icon>close</mat-icon>
-                    </button>
-                </mat-form-field>
-
-                <mat-form-field>
-                    <input matInput type="text" placeholder="Tiêu đề bài viết" required [(ngModel)]="tour.title">
-                    <mat-hint align="start">Được dùng làm tên cho plan</mat-hint>
-                    <mat-hint align="end" class="text-primary" (click)="tour.title = tour.name">sao chép từ tên tour</mat-hint>
-                    <button mat-button *ngIf="tour.title" matSuffix mat-icon-button aria-label="Clear" (click)="tour.title=''">
                         <mat-icon>close</mat-icon>
                     </button>
                 </mat-form-field>

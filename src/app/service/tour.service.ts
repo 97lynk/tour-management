@@ -30,14 +30,13 @@ export class TourService {
     this.http.get<any[]>(`${this.SERVER}/tours?_embed=plans&page=${page}&_limit=${size}`);
 
 
-  getDiscountTour = (isExpandTour: boolean = false): Observable<Tour[]> => {
-    let expandTour = '';
-    if (isExpandTour) expandTour = '?_expand=tour';
-    return this.http.get<Tour[]>(`${this.SERVER}/discounts${expandTour}`);
-  }
-
   loadContentPostOfTour = (url: string): Observable<string> =>
     this.http.get(`/data/contents/${url}`, {responseType: 'text'});
 
+  uploadContentPostOfTour = (file: File): Observable<any> => {
+    const formData = new FormData();
+    formData.append('data', file, );
+    return this.http.post<any>(`${this.SERVER}/tours/file`, formData);
+  }
 
 }
