@@ -1,16 +1,19 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { Plan } from '../model/plan';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {Plan} from '../model/plan';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PlanService {
 
-  SERVER = 'http://localhost:4000';
+  SERVER = '/api/v1/plans';
 
   constructor(private http: HttpClient) { }
+
+  getPlans = (page: number = 0, size: number = 10): Observable<Plan> =>
+    this.http.get<Plan[]>(`${this.SERVER}?page=${page}&size=${size}`);
 
   getPlansByTourId = (tourId: number): Observable<Plan[]> =>
     this.http.get<Plan[]>(`${this.SERVER}/plans?tourId=${tourId}`);

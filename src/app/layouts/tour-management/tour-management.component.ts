@@ -1,9 +1,9 @@
-import {Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Tour} from 'app/model/tour';
 import {TourService} from 'app/service/tour.service';
 import {TourListComponent} from './tour-list/tour-list.component';
 import {TourFormComponent} from './tour-form/tour-form.component';
-import {NavigationEnd, Router} from '@angular/router';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-tour-management',
@@ -24,7 +24,7 @@ export class TourManagementComponent implements OnInit {
   ngOnInit() {
   }
 
-  submitNewTour = (insertTour: Tour, tourForm: any) => {
+  submitNewTour = (insertTour: Tour, scrollTarget: any) => {
     if (this.tourForm.insertMode) {
       this.tourService.addNewTour(insertTour)
         .subscribe((tour: Tour) => {
@@ -41,12 +41,12 @@ export class TourManagementComponent implements OnInit {
           // clear form
           this.tourForm.refreshPage();
           // scroll to
-          tourForm.scrollIntoView(true);
+          scrollTarget.scrollIntoView(true);
         });
     }
   }
 
-  submitEditTour = (editTour: Tour, tourForm: any) => {
+  submitEditTour = (editTour: Tour, scrollTarget: any) => {
     if (!this.tourForm.insertMode && editTour.id !== -1) {
       this.tourService.updateTourById(editTour.id, editTour)
         .subscribe((tour: Tour) => {
@@ -63,13 +63,13 @@ export class TourManagementComponent implements OnInit {
           // clear form
           this.tourForm.refreshPage();
           // scroll to
-          tourForm.scrollIntoView(true);
+          scrollTarget.scrollIntoView(true);
         });
     }
   }
 
-  clickEditTour = (tour: Tour, tourForm: any) => {
-    tourForm.scrollIntoView(true);
+  clickEditTour = (tour: Tour, scrollTarget: any) => {
+    scrollTarget.scrollIntoView(true);
 
     // change data of form
     this.tourForm.insertMode = false;

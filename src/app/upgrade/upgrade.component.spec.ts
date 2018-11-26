@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { UpgradeComponent } from './upgrade.component';
+import {UpgradeComponent} from './upgrade.component';
 
 describe('UpgradeComponent', () => {
   let component: UpgradeComponent;

@@ -1,4 +1,4 @@
-import {Tour} from "./tour";
+import {Tour} from './tour';
 
 export class Item {
     constructor(

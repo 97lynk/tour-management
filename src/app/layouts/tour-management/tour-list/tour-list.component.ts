@@ -2,7 +2,7 @@ import {Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core'
 import {Tour} from '../../../model/tour';
 import {MatPaginator, MatPaginatorIntl, MatTableDataSource} from '@angular/material';
 import {TourService} from '../../../service/tour.service';
-import {trigger, state, style, transition, animate} from '@angular/animations';
+import {animate, state, style, transition, trigger} from '@angular/animations';
 import {map, startWith, switchMap} from 'rxjs/operators';
 import {Page} from '../../../model/response-resource';
 

@@ -8,26 +8,22 @@ import {Tour} from '../model/tour';
 })
 export class TourService {
 
-  SERVER = '/api/v1';
+  SERVER = '/api/v1/tours';
 
   constructor(private http: HttpClient) {
   }
 
   getTours = (page: number = 0, size: number = 10): Observable<Tour> =>
-    this.http.get<Tour>(`${this.SERVER}/tours?page=${page}&size=${size}`);
+    this.http.get<Tour>(`${this.SERVER}?page=${page}&size=${size}`);
 
   addNewTour = (tour: Tour): Observable<Tour> =>
-    this.http.post<Tour>(`${this.SERVER}/tours`, tour);
+    this.http.post<Tour>(`${this.SERVER}`, tour);
 
   updateTourById = (tourId: number | string, tour: Tour) =>
-    this.http.put(`${this.SERVER}/tours/${tourId}`, tour);
+    this.http.put(`${this.SERVER}/${tourId}`, tour);
 
   deleteTourById = (tourId: number | string) =>
-    this.http.delete(`${this.SERVER}/tours/${tourId}`);
-
-
-  getToursAndPlans = (page: number = 0, size: number = 10): Observable<any[]> =>
-    this.http.get<any[]>(`${this.SERVER}/tours?_embed=plans&page=${page}&_limit=${size}`);
+    this.http.delete(`${this.SERVER}/${tourId}`);
 
 
   loadContentPostOfTour = (url: string): Observable<string> =>
