@@ -16,7 +16,7 @@ import {NotificationsComponent} from '../../notifications/notifications.componen
 import {UpgradeComponent} from '../../upgrade/upgrade.component';
 import {PlanManagementComponent} from '../plan-management/plan-management.component';
 import {TourManagementComponent} from '../tour-management/tour-management.component';
-import {PlanningDialogComponent} from '../plan-management/dialog/planning-modal.component';
+import {PlanningDialogComponent} from '../plan-management/dialog/planning-dialog.component';
 import {CKEditorModule} from 'ngx-ckeditor';
 
 import {
@@ -34,10 +34,19 @@ import {
   MatRippleModule,
   MatSnackBarModule,
   MatTableModule,
-  MatTooltipModule
+  MatTooltipModule,
+  MatProgressSpinnerModule,
+  MatProgressBarModule,
+  MatBadgeModule,
+  MatRadioModule,MatFormFieldModule,
+  MatExpansionModule, MatStepperModule
 } from '@angular/material';
 import {TourListComponent} from '../tour-management/tour-list/tour-list.component';
 import {TourFormComponent} from '../tour-management/tour-form/tour-form.component';
+import {PlanFormComponent} from '../plan-management/plan-form/plan-form.component';
+import {VDateTimePipe} from '../../pipe/vdate-time.pipe';
+import {VTextEncodePipe} from '../../pipe/vtext-encode.pipe';
+import {ShortendTextPipe} from '../../pipe/shortend-text.pipe';
 
 @NgModule({
   imports: [
@@ -60,6 +69,12 @@ import {TourFormComponent} from '../tour-management/tour-form/tour-form.componen
     MatChipsModule,
     MatSnackBarModule,
     MatCardModule,
+    MatExpansionModule,
+    MatProgressSpinnerModule,
+    MatProgressBarModule,
+    MatBadgeModule,
+    MatStepperModule,
+    MatRadioModule,MatFormFieldModule,
     CKEditorModule
   ],
   declarations: [
@@ -76,7 +91,11 @@ import {TourFormComponent} from '../tour-management/tour-form/tour-form.componen
     PlanningDialogComponent,
     TourManagementComponent,
     TourListComponent,
-    TourFormComponent
+    TourFormComponent,
+    PlanFormComponent,
+    VDateTimePipe,
+    VTextEncodePipe,
+    ShortendTextPipe
   ],
   entryComponents: [
     PlanningDialogComponent // custom dialog

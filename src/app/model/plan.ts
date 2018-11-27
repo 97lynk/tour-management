@@ -11,6 +11,7 @@ export class Plan extends ResponseResource<Plan>{
   numberOfReservedSlot: number;
   adultPrice: number;
   childPrice: number;
+  tourId: number;
   tour: Tour;
   places: Place[];
   placeIds: number[];

@@ -13,6 +13,9 @@ export class TourService {
   constructor(private http: HttpClient) {
   }
 
+  getTourById = (id: number| string): Observable<Tour> =>
+    this.http.get<Tour>(`${this.SERVER}/${id}`);
+
   getTours = (page: number = 0, size: number = 10): Observable<Tour> =>
     this.http.get<Tour>(`${this.SERVER}?page=${page}&size=${size}`);
 
@@ -24,7 +27,6 @@ export class TourService {
 
   deleteTourById = (tourId: number | string) =>
     this.http.delete(`${this.SERVER}/${tourId}`);
-
 
   loadContentPostOfTour = (url: string): Observable<string> =>
     this.http.get(`/data/contents/${url}`, {responseType: 'text'});

@@ -13,7 +13,7 @@ export class PlanService {
   constructor(private http: HttpClient) { }
 
   getPlans = (page: number = 0, size: number = 10): Observable<Plan> =>
-    this.http.get<Plan[]>(`${this.SERVER}?page=${page}&size=${size}`);
+    this.http.get<Plan>(`${this.SERVER}?page=${page}&size=${size}`);
 
   getPlansByTourId = (tourId: number): Observable<Plan[]> =>
     this.http.get<Plan[]>(`${this.SERVER}/plans?tourId=${tourId}`);

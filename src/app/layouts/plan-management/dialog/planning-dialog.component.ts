@@ -1,11 +1,11 @@
-import { Component, Inject, ViewChild, ElementRef } from '@angular/core';
-import { MAT_DIALOG_DATA, MatAutocomplete, MatChipInputEvent, MatAutocompleteSelectedEvent } from '@angular/material';
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { Plan } from 'app/model/plan';
-import { Place } from 'app/model/place';
-import { Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
-import { FormControl } from '@angular/forms';
+import {Component, ElementRef, Inject, ViewChild} from '@angular/core';
+import {MAT_DIALOG_DATA, MatAutocomplete, MatAutocompleteSelectedEvent} from '@angular/material';
+import {COMMA, ENTER} from '@angular/cdk/keycodes';
+import {Plan} from 'app/model/plan';
+import {Place} from 'app/model/place';
+import {Observable} from 'rxjs';
+import {map, startWith} from 'rxjs/operators';
+import {FormControl} from '@angular/forms';
 
 
 @Component({
@@ -15,7 +15,7 @@ import { FormControl } from '@angular/forms';
 
 export class PlanningDialogComponent {
 
-  plan = new Plan(0, '', '', (new Date()).getTime(), 0, 30, 2000000.0, 1000000.0, 0);
+  plan: Plan;
 
   startDateTime = new Date();
 
@@ -64,7 +64,7 @@ export class PlanningDialogComponent {
       this.startDateTime.setHours(Number(times[0]));
       this.startDateTime.setMinutes(Number(times[1]));
 
-      this.plan.startTime = this.startDateTime.getTime();
+      // this.plan.startTime = this.startDateTime.getTime();
     }
   }
 

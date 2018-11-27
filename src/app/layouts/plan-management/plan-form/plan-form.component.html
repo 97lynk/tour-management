@@ -1,0 +1,78 @@
+<div class="row">
+    <div class="col">
+        <mat-form-field>
+            <input matInput type="text" placeholder="Tên plan" (keyup)="plan.url = encodingVietNamese(plan.name)"
+                   [(ngModel)]="plan.name">
+            <button mat-button *ngIf="plan.name" matSuffix mat-icon-button aria-label="Clear"
+                    (click)="plan.name=''">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-form-field>
+    </div>
+    <div class="col">
+        <mat-form-field>
+            <input matInput type="text" placeholder="URL" [(ngModel)]="plan.url">
+            <button mat-button *ngIf="plan.url" matSuffix mat-icon-button aria-label="Clear"
+                    (click)="plan.url=''">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-form-field>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col">
+        <mat-form-field>
+            <input matInput [matDatepicker]="picker" placeholder="Ngày khởi hành" [(ngModel)]="startDateTime">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+    </div>
+    <div class="col">
+        <mat-form-field>
+            <input matInput type="time" placeholder="Giờ khởi hành" [value]="startDateTime | date :'HH:mm'"
+                   (change)="changeTime($event)">
+        </mat-form-field>
+    </div>
+    <div class="col">
+        <mat-form-field>
+            <input matInput type="number" placeholder="Số vé đã đặt" [(ngModel)]="plan.numberOfReservedSlot">
+        </mat-form-field>
+    </div>
+    <div class="col">
+        <mat-form-field>
+            <input matInput type="number" placeholder="Tổng số vé" [(ngModel)]="plan.numberOfSlot">
+        </mat-form-field>
+    </div>
+    <div class="col">
+        <mat-form-field>
+            <input matInput type="number" placeholder="Giá tour cho người lớn" [(ngModel)]="plan.adultPrice">
+        </mat-form-field>
+    </div>
+    <div class="col">
+        <mat-form-field>
+            <input matInput type="number" placeholder="Giá tour cho trẻ" [(ngModel)]="plan.childPrice">
+        </mat-form-field>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col">
+        <mat-form-field>
+            <mat-chip-list #chipList>
+                <mat-chip *ngFor="let p of choosedPlaces" [selectable]="true" [removable]="true" (removed)="remove(p)">
+                    {{ p.name }}
+                    <mat-icon matChipRemove *ngIf="true">cancel</mat-icon>
+                </mat-chip>
+                <input placeholder="Chọn địa điểm" #placeInput [formControl]="inputPlace" [matAutocomplete]="auto"
+                       [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                       [matChipInputAddOnBlur]="true">
+            </mat-chip-list>
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+                <mat-option *ngFor="let p of filteredProvinces | async" [value]="p">
+                    {{ p.name }}
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+    </div>
+</div>

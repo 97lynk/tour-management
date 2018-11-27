@@ -8,6 +8,7 @@ import {AppRoutingModule} from './app.routing';
 import {ComponentsModule} from './components/components.module';
 
 import {AppComponent} from './app.component';
+
 // import {
 //   AgmCoreModule
 // } from '@agm/core';
@@ -19,7 +20,7 @@ import {AdminLayoutComponent} from './layouts/admin-layout/admin-layout.componen
     FormsModule,
     ComponentsModule,
     RouterModule,
-    AppRoutingModule,
+    AppRoutingModule
     // AgmCoreModule.forRoot({
     //   apiKey: 'YOUR_GOOGLE_MAPS_API_KEY'
     // })
@@ -31,4 +32,5 @@ import {AdminLayoutComponent} from './layouts/admin-layout/admin-layout.componen
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

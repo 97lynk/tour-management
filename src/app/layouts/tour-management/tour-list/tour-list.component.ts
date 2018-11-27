@@ -5,6 +5,7 @@ import {TourService} from '../../../service/tour.service';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {map, startWith, switchMap} from 'rxjs/operators';
 import {Page} from '../../../model/response-resource';
+import {ShortendTextPipe} from '../../../pipe/shortend-text.pipe';
 
 @Component({
   selector: 'tour-list',

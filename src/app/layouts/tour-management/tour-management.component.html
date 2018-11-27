@@ -1,14 +1,35 @@
 <div class="main-content">
     <div class="container-fluid">
-        <div class="row" #tourForm>
-            <div class="col-md-12">
-                <tour-form (clickSaveAddTour)="submitNewTour($event, tourForm)" (clickSaveEditTour)="submitEditTour($event, tourForm)"></tour-form>
+        <div class="row">
+            <div class="col" #cardTour>
+                <div class="card">
+                    <div class="card-header card-header-danger">
+                        <h4 class="card-title">
+                            {{ tourForm.insertMode ? ' Tạo tour mới': 'Thay đổi thông tin tour'}}
+                        </h4>
+                        <p class="card-category" *ngIf="!tourForm.insertMode ">
+                            Đang chỉnh sửa Tour#{{ tourForm.tour.id }}
+                        </p>
+                    </div>
+                    <div class="card-body">
+                        <tour-form (clickSaveAddTour)="submitNewTour($event, cardTour)"
+                                   (clickSaveEditTour)="submitEditTour($event, cardTour)"></tour-form>
+                    </div>
+                </div>
+
             </div>
         </div>
-
         <div class="row">
-            <div class="col-md-12">
-                <tour-list (clickEditButton)="clickEditTour($event, tourForm)"></tour-list>
+            <div class="col">
+                <div class="card">
+                    <div class="card-header card-header-danger">
+                        <h4 class="card-title ">Danh sách các tour</h4>
+                        <p class="card-category">Tổng cộng {{ tableTours.page.totalElements }} tour</p>
+                    </div>
+                    <div class="card-body">
+                        <tour-list (clickEditButton)="clickEditTour($event, cardTour)"></tour-list>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

@@ -1,17 +1,31 @@
-table {
-    width: 100%;
+.plan-headers-align .mat-expansion-panel-header-title,
+.plan-headers-align .mat-expansion-panel-header-description {
+  flex-basis: 0;
 }
 
-.tour-detail {
-    overflow: hidden;
-    display: flex;  
+.plan-headers-align .mat-expansion-panel-header-description {
+  max-width: 10%;
+  justify-content: flex-end;
+  align-items: center;
 }
 
-tr.tour-detail-row {
-    height: 0;
+.plan-headers-align .mat-expansion-panel-header-title {
+  white-space: nowrap;
 }
 
-.tour-row td {
-    border-bottom-width: 0;
+pre {
+  font-size: 1em;
+  overflow: hidden;
+  font-family: 'Montserrat', sans-serif;
+  white-space: pre-wrap; /* Since CSS 2.1 */
+  white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+  white-space: -pre-wrap; /* Opera 4-6 */
+  white-space: -o-pre-wrap; /* Opera 7 */
+  word-wrap: break-word; /* Internet Explorer 5.5+ */
 }
-  
+
+.ellipsis-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

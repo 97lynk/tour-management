@@ -8,12 +8,15 @@ import {Place} from '../model/place';
 })
 export class PlaceService {
 
-  SERVER = 'http://localhost:4000';
+  SERVER = '/api/v1/places';
 
   constructor(private http: HttpClient) { }
 
-  getPlaces = (page: number = 0, size: number = 10): Observable<Place[]> =>
-    this.http.get<Place[]>(`${this.SERVER}/places?page=${page}&_limit=${size}`);
+  getPlaces = (): Observable<Place> =>
+    this.http.get<Place>(this.SERVER);
+
+  getPlacesByPlanId = (planId: number|string): Observable<Place> =>
+    this.http.get<Place>(`/api/v1/plans/${planId}/places`);
 
   getPlansWithPlaces = () =>
     this.http.get(`${this.SERVER}/plans_places?_expand=place`);

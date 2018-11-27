@@ -1,97 +1,91 @@
-<div class="card">
-    <div class="card-header card-header-danger">
-        {{ insertMode ? ' Tạo tour mới': 'Thay đổi thông tin Tour#' + tour.id }}
+<div class="row">
+    <div class="col mh-100 ">
+        <img class="img-fluid mx-auto d-block pb-3" [src]="tour.imageUrl"
+             (error)="previewImg.src='https://www.sylff.org/wp-content/uploads/2016/04/noImage.jpg'"
+             #previewImg/>
     </div>
-    <div class="card-body">
+    <div class="col">
+        <mat-form-field>
+            <input matInput type="text" placeholder="Tên tour" required [(ngModel)]="tour.name"
+                   (keyup)="tour.url = encodingVietNamese(tour.name)">
+            <mat-hint align="start">Làm tiêu đề bài viết và tên plan</mat-hint>
+            <button mat-button *ngIf="tour.name" matSuffix mat-icon-button aria-label="Clear" (click)="tour.name=''">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-form-field>
 
-        <div class="row">
-            <div class="col mh-100 ">
-                <img class="img-fluid mx-auto d-block pb-3" [src]="tour.imageUrl"
-                     (error)="previewImg.src='https://www.sylff.org/wp-content/uploads/2016/04/noImage.jpg'"
-                     #previewImg/>
-            </div>
-            <div class="col">
-                <mat-form-field>
-                    <input matInput type="text" placeholder="Tên tour" required [(ngModel)]="tour.name"
-                           (keyup)="tour.url = encodingVietNamese(tour.name)">
-                    <mat-hint align="start">Làm tiêu đề bài viết và tên plan</mat-hint>
-                    <button mat-button *ngIf="tour.name" matSuffix mat-icon-button aria-label="Clear" (click)="tour.name=''">
-                        <mat-icon>close</mat-icon>
-                    </button>
-                </mat-form-field>
-
-                <mat-form-field>
-                    <input matInput type="text" placeholder="URL" required [(ngModel)]="tour.url">
-                    <mat-hint align="end" class="text-primary" (click)="tour.url = encodingVietNamese(tour.name)">
-                        encode từ tên tour
-                    </mat-hint>
-                    <button mat-button *ngIf="tour.url" matSuffix mat-icon-button aria-label="Clear" (click)="tour.url=''">
-                        <mat-icon>close</mat-icon>
-                    </button>
-                </mat-form-field>
-
-                <div class="row">
-                    <mat-form-field class="col">
-                        <input matInput type="text" placeholder="Số ngày" required [(ngModel)]="tour.numberOfDate"
-                               (keyup)="tour.numberOfNight = (tour.numberOfDate - 1)">
-                    </mat-form-field>
-
-                    <mat-form-field class="col">
-                        <input matInput type="text" placeholder="Số đêm" required [(ngModel)]="tour.numberOfNight">
-                    </mat-form-field>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <mat-form-field class="col-6">
-                <input matInput type="text" required placeholder="URL hình ảnh"
-                       [(ngModel)]="tour.imageUrl">
-                <button mat-button *ngIf="tour.imageUrl" matSuffix mat-icon-button aria-label="Clear" (click)="tour.imageUrl=''">
-                    <mat-icon>close</mat-icon>
-                </button>
-            </mat-form-field>
-            <mat-form-field class="col-3">
-                <input matInput type="text" placeholder="Tạo lúc" required disabled value="{{ tour.createAt }}">
-            </mat-form-field>
-            <mat-form-field class="col-3">
-                <input matInput type="text" placeholder="Tạo bởi" required disabled value="{{ tour.createBy }}">
-            </mat-form-field>
-        </div>
+        <mat-form-field>
+            <input matInput type="text" placeholder="URL" required [(ngModel)]="tour.url">
+            <mat-hint align="end" class="text-primary" (click)="tour.url = encodingVietNamese(tour.name)">
+                encode từ tên tour
+            </mat-hint>
+            <button mat-button *ngIf="tour.url" matSuffix mat-icon-button aria-label="Clear" (click)="tour.url=''">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-form-field>
 
         <div class="row">
             <mat-form-field class="col">
-                <textarea matInput rows="5" placeholder="Tóm tắt" [(ngModel)]="tour.description"></textarea>
-                <button mat-button *ngIf="tour.description" matSuffix mat-icon-button aria-label="Clear" (click)="tour.description=''">
-                    <mat-icon>close</mat-icon>
-                </button>
+                <input matInput type="text" placeholder="Số ngày" required [(ngModel)]="tour.numberOfDate"
+                       (keyup)="tour.numberOfNight = (tour.numberOfDate - 1)">
+            </mat-form-field>
+
+            <mat-form-field class="col">
+                <input matInput type="text" placeholder="Số đêm" required [(ngModel)]="tour.numberOfNight">
             </mat-form-field>
         </div>
-
-        <div class="row">
-            <div class="col">
-                <div class="pt-3 pb-3 clearfix">
-                    <span class="float-left"><b>Lịch trình</b> (Nội dung bài viết)</span>
-                    <button mat-button class="float-right"
-                            matSuffix mat-icon-button aria-label="Clear" (click)="contentHTML=''">
-                        <mat-icon>close</mat-icon>
-                    </button>
-                </div>
-                <ck-editor [config]="CKEditorConfig" [(ngModel)]="contentHTML"
-                           skin="moono-lisa" language="vi" [fullPage]="false" [name]="CKEditorId">
-                </ck-editor>
-            </div>
-        </div>
-
-        <div class="pt-3">
-            <button mat-button mat-raised-button color="warn" class="pull-right"
-                    *ngIf="insertMode" (click)="clickAddTour.emit(tour)">
-                Lưu tour
-            </button>
-            <button mat-button mat-raised-button color="warn" class="pull-right"
-                    *ngIf="!insertMode" (click)="clickEditTour.emit(tour)">
-                Lưu thay đổi
-            </button>
-        </div>
     </div>
+</div>
+
+<div class="row">
+    <mat-form-field class="col-6">
+        <input matInput type="text" required placeholder="URL hình ảnh"
+               [(ngModel)]="tour.imageUrl">
+        <button mat-button *ngIf="tour.imageUrl" matSuffix mat-icon-button aria-label="Clear"
+                (click)="tour.imageUrl=''">
+            <mat-icon>close</mat-icon>
+        </button>
+    </mat-form-field>
+    <mat-form-field class="col-3">
+        <input matInput type="text" placeholder="Tạo lúc" required disabled value="{{ tour.createAt }}">
+    </mat-form-field>
+    <mat-form-field class="col-3">
+        <input matInput type="text" placeholder="Tạo bởi" required disabled value="{{ tour.createBy }}">
+    </mat-form-field>
+</div>
+
+<div class="row">
+    <mat-form-field class="col">
+        <textarea matInput rows="5" placeholder="Tóm tắt" [(ngModel)]="tour.description"></textarea>
+        <button mat-button *ngIf="tour.description" matSuffix mat-icon-button aria-label="Clear"
+                (click)="tour.description=''">
+            <mat-icon>close</mat-icon>
+        </button>
+    </mat-form-field>
+</div>
+
+<div class="row">
+    <div class="col">
+        <div class="pt-3 pb-3 clearfix">
+            <span class="float-left"><b>Lịch trình</b> (Nội dung bài viết)</span>
+            <button mat-button class="float-right"
+                    matSuffix mat-icon-button aria-label="Clear" (click)="contentHTML=''">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+        <ck-editor [config]="CKEditorConfig" [(ngModel)]="contentHTML"
+                   skin="moono-lisa" language="vi" [fullPage]="false" [name]="CKEditorId">
+        </ck-editor>
+    </div>
+</div>
+
+<div class="pt-3">
+    <button mat-button mat-raised-button color="warn" class="pull-right"
+            *ngIf="insertMode" (click)="clickAddTour.emit(tour)">
+        Lưu tour
+    </button>
+    <button mat-button mat-raised-button color="warn" class="pull-right"
+            *ngIf="!insertMode" (click)="clickEditTour.emit(tour)">
+        Lưu thay đổi
+    </button>
 </div>
