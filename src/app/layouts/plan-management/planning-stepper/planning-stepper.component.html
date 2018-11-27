@@ -1,0 +1,44 @@
+<mat-horizontal-stepper linear="false" #stepper>
+    <mat-step>
+        <ng-template matStepLabel>Chọn tour</ng-template>
+        <div>
+            <mat-form-field>
+                <input matInput type="number" placeholder="Mã tour" [(ngModel)]="choosedTour.id"
+                        (change)="checkExistTour($event.target.value)">
+                <mat-error *ngIf="notExistTour">Tour#{{ choosedTour.id }} không tồn tại</mat-error>
+            </mat-form-field>
+            {{ choosedTour?.id }}
+            <button mat-button matStepperNext>Next</button>
+        </div>
+        <mat-radio-group [(ngModel)]="choosedTour">
+            <mat-paginator #tourPaginator [length]="page.totalElements" [pageSize]="page.size" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+            <mat-radio-button class="card m-1 px-2" style="overflow: hidden" *ngFor="let tour of tours" [checked]="plan.tourId == tour.id" [value]="tour">
+                <div class="card-body py-2">
+                    <h4 class="card-title ellipsis-text">#{{ tour.id }} - {{ tour.name }}</h4>
+                    <p class="card-text"><b>Thời gian:</b> {{ tour.numberOfDate }} ngày {{ tour.numberOfNight }} đêm
+                    </p>
+                </div>
+            </mat-radio-button>
+        </mat-radio-group>
+    </mat-step>
+
+    <mat-step [stepControl]="secondFormGroup">
+        <form [formGroup]="secondFormGroup">
+            <ng-template matStepLabel>Điền thông tin plan</ng-template>
+            <plan-form [plan]="plan" [provinces]="provinces"></plan-form>
+            <div>
+                <button mat-button matStepperPrevious>Back</button>
+                <button mat-button matStepperNext>Next</button>
+            </div>
+        </form>
+    </mat-step>
+
+    <mat-step>
+        <ng-template matStepLabel>Hoàn thành</ng-template>
+        You are now done.
+        <div>
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-button (click)="stepper.reset()">Reset</button>
+        </div>
+    </mat-step>
+</mat-horizontal-stepper>

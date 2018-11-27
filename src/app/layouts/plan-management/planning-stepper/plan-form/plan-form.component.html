@@ -3,7 +3,7 @@
         <mat-form-field>
             <input matInput type="text" placeholder="Tên plan" (keyup)="plan.url = encodingVietNamese(plan.name)"
                    [(ngModel)]="plan.name">
-            <button mat-button *ngIf="plan.name" matSuffix mat-icon-button aria-label="Clear"
+            <button mat-button *ngIf="plan?.name" matSuffix mat-icon-button aria-label="Clear"
                     (click)="plan.name=''">
                 <mat-icon>close</mat-icon>
             </button>

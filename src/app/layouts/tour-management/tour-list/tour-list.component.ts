@@ -11,29 +11,7 @@ import {ShortendTextPipe} from '../../../pipe/shortend-text.pipe';
   selector: 'tour-list',
   templateUrl: './tour-list.component.html',
   styleUrls: ['./tour-list.component.scss'],
-  providers: [TourService, {
-    provide: MatPaginatorIntl, useClass: () => {
-      const paginatorLabels = new MatPaginatorIntl();
-      paginatorLabels.itemsPerPageLabel = 'Số tour mỗi trang';
-      paginatorLabels.nextPageLabel = 'Trang kế';
-      paginatorLabels.previousPageLabel = 'Trang trước';
-      paginatorLabels.firstPageLabel = 'Trang đầu';
-      paginatorLabels.lastPageLabel = 'Trang cuối';
-      paginatorLabels.getRangeLabel= (page: number, pageSize: number, length: number) => {
-        if (length === 0 || pageSize === 0) {
-          return '0 od ' + length;
-        }
-        length = Math.max(length, 0);
-        const startIndex = page * pageSize;
-        // If the start index exceeds the list length, do not try and fix the end index to the end.
-        const endIndex = startIndex < length ?
-          Math.min(startIndex + pageSize, length) :
-          startIndex + pageSize;
-        return startIndex + 1 + ' - ' + endIndex + ' của ' + length;
-      };
-      return paginatorLabels;
-    }
-  }],
+  providers: [TourService],
   animations: [
     trigger('detailExpand', [
       state('collapsed', style({height: '0px', minHeight: '0', display: 'none'})),

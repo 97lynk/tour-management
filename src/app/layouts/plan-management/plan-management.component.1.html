@@ -1,53 +1,8 @@
 <div class="main-content">
     <div class="container-fluid">
-        <div class="row">
+        <div class="row" *ngIf="showPlanStepper">
             <div class="col-12">
-                <mat-horizontal-stepper linear="false" #stepper>
-                    <mat-step>
-                        <ng-template matStepLabel>Chọn tour</ng-template>
-                        <div>
-                            {{ choosedTour?.id }}
-                            <button mat-button matStepperNext>Next</button>
-                        </div>
-                        <mat-radio-group [(ngModel)]="choosedTour">
-                            <mat-radio-button class="card m-1 p-2" *ngFor="let tour of tours" [value]="tour">
-                                <div class="row">
-                                    <div class="col-2 py-2">
-                                        <img [src]="tour.imageUrl" class="img-fluid mx-auto d-block">
-                                    </div>
-                                    <div class="col-9">
-                                        <div class="card-body py-2">
-                                            <h4 class="card-title ellipsis-text">#{{ tour.id }} - {{ tour.name }}</h4>
-                                            <p class="card-text">
-                                                <b>Thời gian:</b> {{ tour.numberOfDate }} ngày {{ tour.numberOfNight }}
-                                                đêm
-                                            </p>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </mat-radio-button>
-                        </mat-radio-group>
-                    </mat-step>
-                    <mat-step [stepControl]="secondFormGroup">
-                        <form [formGroup]="secondFormGroup">
-                            <ng-template matStepLabel>Điền thông tin plan</ng-template>
-                            <plan-form [plan]="plans[0]" [provinces]="provinces"></plan-form>
-                            <div>
-                                <button mat-button matStepperPrevious>Back</button>
-                                <button mat-button matStepperNext>Next</button>
-                            </div>
-                        </form>
-                    </mat-step>
-                    <mat-step>
-                        <ng-template matStepLabel>Hoàn thành</ng-template>
-                        You are now done.
-                        <div>
-                            <button mat-button matStepperPrevious>Back</button>
-                            <button mat-button (click)="stepper.reset()">Reset</button>
-                        </div>
-                    </mat-step>
-                </mat-horizontal-stepper>
+                <planning-stepper [provinces]="provinces" [plan]="editPlan"></planning-stepper>
             </div>
         </div>
 
@@ -59,13 +14,9 @@
                         <p class="card-category"> Here is a subtitle for this table</p>
                     </div>
                     <div class="card-body">
-
-                        <mat-paginator [length]="page.totalElements" [pageSize]="page.size"
-                                       [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
-
+                        <mat-paginator #planPaginator [length]="page.totalElements" [pageSize]="page.size" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
                         <mat-accordion class="plan-headers-align">
-                            <mat-expansion-panel *ngFor="let plan of plans" [expanded]="step === 0"
-                                                 (opened)="loadTour(plan)" hideToggle>
+                            <mat-expansion-panel *ngFor="let plan of plans" [expanded]="step === 0" (opened)="loadTour(plan)" hideToggle>
                                 <mat-expansion-panel-header>
                                     <mat-panel-title>
                                         <span><b>#{{ plan.id }} </b> {{ plan.name }}</span>
@@ -78,21 +29,19 @@
                                 <ng-template matExpansionPanelContent>
                                     <div class="row">
                                         <div class="col-md-4">
-                                            <img class="img-fluid mx-auto d-block" [src]="tourExpanded?.imageUrl"
-                                                 alt="">
+                                            <img class="img-fluid mx-auto d-block" [src]="tourExpanded?.imageUrl" alt="">
                                         </div>
                                         <div class="col-md-8">
                                             <p><b>Tên tour:</b> {{ tourExpanded?.name }}</p>
                                             <p><b>Khởi hành:</b> {{ plan.startTime | vdatetime }}</p>
-                                            <p><b>Thời gian:</b> {{ tourExpanded?.numberOfDate }} ngày {{
-                                                tourExpanded?.numberOfNight }} đêm</p>
+                                            <p><b>Thời gian:</b> {{ tourExpanded?.numberOfDate }} ngày {{ tourExpanded?.numberOfNight }} đêm</p>
                                             <p><b>Số vé:</b> {{ plan.numberOfReservedSlot }}/{{ plan.numberOfSlot }}</p>
-                                            <p><b>Giá vé (trẻ em/người lớn):</b> {{ plan.childPrice }}/{{
-                                                plan.adultPrice }}</p>
+                                            <p><b>Giá vé (trẻ em/người lớn):</b> {{ plan.childPrice }}/
+                                                {{plan.adultPrice }}</p>
                                             <p><b>Địa diểm:</b> {{ placeNames }}</p>
-                                            <p><b>Lịch trình:</b> <a
-                                                    href="/data/contents/{{ tourExpanded?.fileContentUrl }}"
-                                                    target="_blank"> xem chi tiết</a></p>
+                                            <p><b>Lịch trình:</b>
+                                                <a href="/data/contents/{{ tourExpanded?.fileContentUrl }}" target="_blank">
+                                                    xem chi tiết</a></p>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -105,12 +54,11 @@
 
                                 <mat-action-row>
                                     <button mat-stroked-button color="warn" class="m-2">
-                                        <mat-icon>delete</mat-icon>
-                                        Xóa plan
+                                        <mat-icon>delete</mat-icon> Xóa plan
                                     </button>
-                                    <button mat-stroked-button color="primary" class="m-2">
-                                        <mat-icon>edit</mat-icon>
-                                        Điều chỉnh plan
+                                    <button mat-stroked-button color="primary" class="m-2"
+                                            (click)="editPlan = plan; showPlanStepper = !showPlanStepper;">
+                                        <mat-icon>edit</mat-icon> Điều chỉnh plan
                                     </button>
                                 </mat-action-row>
                             </mat-expansion-panel>

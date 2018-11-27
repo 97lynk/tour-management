@@ -1,12 +1,12 @@
 import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
-import {Plan} from '../../../model/plan';
+import {Plan} from '../../../../model/plan';
 import {MatAutocomplete, MatAutocompleteSelectedEvent} from '@angular/material';
-import {Place} from '../../../model/place';
+import {Place} from '../../../../model/place';
 import {FormControl} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {map, startWith} from 'rxjs/operators';
-import {VTextEncodePipe} from '../../../pipe/vtext-encode.pipe';
+import {VTextEncodePipe} from '../../../../pipe/vtext-encode.pipe';
 
 @Component({
   selector: 'plan-form',
@@ -23,9 +23,11 @@ export class PlanFormComponent implements OnInit {
   @ViewChild('placeInput') placeInput: ElementRef<HTMLInputElement>;
   @ViewChild('auto') matAutocomplete: MatAutocomplete;
 
-  startDateTime = new Date();
+
 
   title = '';
+
+  startDateTime = new Date();
 
   inputPlace = new FormControl();
 

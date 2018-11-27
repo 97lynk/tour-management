@@ -4,11 +4,35 @@ import 'rxjs/add/operator/filter';
 import {NavigationEnd, NavigationStart, Router} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
 import PerfectScrollbar from 'perfect-scrollbar';
+import {MatPaginatorIntl} from '@angular/material';
 
 @Component({
   selector: 'app-admin-layout',
   templateUrl: './admin-layout.component.html',
-  styleUrls: ['./admin-layout.component.scss']
+  styleUrls: ['./admin-layout.component.scss'],
+  providers: [{
+    provide: MatPaginatorIntl, useClass: () => {
+      const paginatorLabels = new MatPaginatorIntl();
+      paginatorLabels.itemsPerPageLabel = 'Số dòng mỗi trang';
+      paginatorLabels.nextPageLabel = 'Trang kế';
+      paginatorLabels.previousPageLabel = 'Trang trước';
+      paginatorLabels.firstPageLabel = 'Trang đầu';
+      paginatorLabels.lastPageLabel = 'Trang cuối';
+      paginatorLabels.getRangeLabel= (page: number, pageSize: number, length: number) => {
+        if (length === 0 || pageSize === 0) {
+          return '0 od ' + length;
+        }
+        length = Math.max(length, 0);
+        const startIndex = page * pageSize;
+        // If the start index exceeds the list length, do not try and fix the end index to the end.
+        const endIndex = startIndex < length ?
+          Math.min(startIndex + pageSize, length) :
+          startIndex + pageSize;
+        return startIndex + 1 + ' - ' + endIndex + ' của ' + length;
+      };
+      return paginatorLabels;
+    }
+  }]
 })
 export class AdminLayoutComponent implements OnInit {
   private _router: Subscription;

@@ -29,33 +29,34 @@ declare var $: any;
 })
 export class PlanManagementComponent implements OnInit {
 
-  firstFormGroup: FormGroup;
-  secondFormGroup: FormGroup;
+  @ViewChild('planPaginator') paginator: MatPaginator;
+
+  page: Page;
+
 
   plans: Plan[];
-
-  tours: Tour[];
-
-  choosedTour: Tour;
 
   tourExpanded: Tour;
 
   placeNames: string;
 
-  page: Page;
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   provinces: Place[];
+
+  //
+  editPlan: Plan;
+
+  showPlanStepper: boolean;
 
   constructor(
     private placeService: PlaceService,
     private tourService: TourService,
-    private planService: PlanService,
-    private formBuilder: FormBuilder) {
+    private planService: PlanService) {
     this.page = {size: 10, totalElements: 0, totalPages: 0, number: 0};
     this.provinces = [];
     this.placeNames = '';
+    this.showPlanStepper = false;
   }
 
   ngOnInit() {
@@ -75,15 +76,6 @@ export class PlanManagementComponent implements OnInit {
         this.plans = plans;
       });
 
-    this.firstFormGroup = this.formBuilder.group({
-      firstCtrl: ['', Validators.required]
-    });
-    this.secondFormGroup = this.formBuilder.group({
-      secondCtrl: ['', Validators.required]
-    });
-
-
-    this.getAllTours();
     this.getAllProvince();
   }
 
@@ -104,8 +96,6 @@ export class PlanManagementComponent implements OnInit {
 
   getAllProvince = () => this.placeService.getPlaces()
     .subscribe((places: Place) => this.provinces = places.content);
-
-  getAllTours = () => this.tourService.getTours(0, 10).subscribe((tour: Tour)=> this.tours = tour.content);
 
   /**
    * methods handle events

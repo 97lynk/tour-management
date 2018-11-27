@@ -43,10 +43,11 @@ import {
 } from '@angular/material';
 import {TourListComponent} from '../tour-management/tour-list/tour-list.component';
 import {TourFormComponent} from '../tour-management/tour-form/tour-form.component';
-import {PlanFormComponent} from '../plan-management/plan-form/plan-form.component';
+import {PlanFormComponent} from '../plan-management/planning-stepper/plan-form/plan-form.component';
 import {VDateTimePipe} from '../../pipe/vdate-time.pipe';
 import {VTextEncodePipe} from '../../pipe/vtext-encode.pipe';
 import {ShortendTextPipe} from '../../pipe/shortend-text.pipe';
+import {PlanningStepperComponent} from '../plan-management/planning-stepper/planning-stepper.component';
 
 @NgModule({
   imports: [
@@ -93,6 +94,7 @@ import {ShortendTextPipe} from '../../pipe/shortend-text.pipe';
     TourListComponent,
     TourFormComponent,
     PlanFormComponent,
+    PlanningStepperComponent,
     VDateTimePipe,
     VTextEncodePipe,
     ShortendTextPipe
